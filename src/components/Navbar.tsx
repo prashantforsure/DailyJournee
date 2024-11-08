@@ -63,19 +63,7 @@ const Navbar = async () => {
                         </Button>
                       </Link>
 
-                      {session?.user.isAdmin && (
-                        <>
-                          <div className="border-t border-gray-200 my-4" />
-                          <Link href="/admin">
-                            <Button
-                              variant="ghost"
-                              className="w-full justify-start px-6 py-2 text-sm hover:text-[#A259FF] transition-colors"
-                            >
-                              Admin Dashboard
-                            </Button>
-                          </Link>
-                        </>
-                      )}
+                     
                     </nav>
                   </SheetContent>
                 </Sheet>
