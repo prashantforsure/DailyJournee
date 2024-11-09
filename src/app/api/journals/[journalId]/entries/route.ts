@@ -4,10 +4,31 @@ import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth/auth';
 
+// const entrySchema = z.object({
+//   title: z.string().min(1, "Title is required").max(255, "Title must be 255 characters or less"),
+//   content: z.string().min(1, "Content is required"),
+//   mood: z.string().optional(),
+//   categoryId: z.string().cuid().optional(),
+//   tagIds: z.array(z.string().cuid()).optional(),
+//   mediaUrls: z.array(z.string().url()).optional(),
+//   isQuickEntry: z.boolean().default(false),
+//   isFavorite: z.boolean().default(false),
+// });
+
 const entrySchema = z.object({
   title: z.string().min(1, "Title is required").max(255, "Title must be 255 characters or less"),
   content: z.string().min(1, "Content is required"),
   mood: z.string().max(50, "Mood must be 50 characters or less").optional(),
+  isQuickEntry: z.boolean().default(false),
+  isFavorite: z.boolean().default(false),
+  categoryId: z.string().optional(),
+  tagIds: z.array(z.string()).optional(),
+  mediaUrls: z.array(
+    z.object({
+      url: z.string(),
+      type: z.enum(['image', 'audio', 'video']), 
+    })
+  ).optional(),
 });
 
 export async function POST(
@@ -43,9 +64,28 @@ export async function POST(
         content: validatedData.content,
         mood: validatedData.mood,
         journalId: journalId,
-        isQuickEntry: false,
-        isFavorite: false
-      }
+        isQuickEntry: validatedData.isQuickEntry,
+        isFavorite: validatedData.isFavorite,
+        categoryId: validatedData.categoryId,
+        tags: validatedData.tagIds?.length 
+          ? {
+              connect: validatedData.tagIds.map(id => ({ id })),
+            }
+          : undefined,
+        media: validatedData.mediaUrls?.length
+          ? {
+              create: validatedData.mediaUrls.map(media => ({
+                url: media.url,
+                type: media.type,
+              })),
+            }
+          : undefined,
+      },
+      include: {
+        tags: true,
+        media: true,
+        category: true,
+      },
     });
 
     return NextResponse.json(newEntry, { status: 201 });
@@ -57,9 +97,6 @@ export async function POST(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-
-
-
 
 const validSortFields = ['createdAt', 'updatedAt', 'title'] as const;
 type SortField = typeof validSortFields[number];
