@@ -57,3 +57,155 @@ export async function POST(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+
+
+
+const validSortFields = ['createdAt', 'updatedAt', 'title'] as const;
+type SortField = typeof validSortFields[number];
+
+const validSortOrders = ['asc', 'desc'] as const;
+type SortOrder = typeof validSortOrders[number];
+
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { journalId: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const { journalId } = params;
+  const { searchParams } = new URL(req.url);
+  
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = parseInt(searchParams.get('limit') || '10');
+  const sortBy = searchParams.get('sortBy') || 'createdAt';
+  const sortOrder = (searchParams.get('sortOrder') || 'desc').toLowerCase();
+  const search = searchParams.get('search') || undefined;
+
+  if (!validSortFields.includes(sortBy as SortField)) {
+    return new NextResponse("Invalid sort field", { status: 400 });
+  }
+  if (!validSortOrders.includes(sortOrder as SortOrder)) {
+    return new NextResponse("Invalid sort order", { status: 400 });
+  }
+
+  const skip = (page - 1) * limit;
+
+  try {
+   
+    const journal = await prisma.journal.findUnique({
+      where: {
+        id: journalId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!journal) {
+      return new NextResponse("Journal not found or unauthorized", { status: 404 });
+    }
+
+    const [entries, totalCount] = await Promise.all([
+      prisma.entry.findMany({
+        where: {
+          journalId,
+          ...(search && {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { content: { contains: search, mode: 'insensitive' } },
+            ],
+          }),
+        },
+        orderBy: {
+          [sortBy]: sortOrder as SortOrder,
+        },
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          title: true,
+          content: true,
+          createdAt: true,
+          updatedAt: true,
+          mood: true,
+          tags: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      }),
+      prisma.entry.count({
+        where: {
+          journalId,
+          ...(search && {
+            OR: [
+              { title: { contains: search, mode: 'insensitive' } },
+              { content: { contains: search, mode: 'insensitive' } },
+            ],
+          }),
+        },
+      }),
+    ]);
+
+    return NextResponse.json({
+      entries,
+      totalCount,
+      currentPage: page,
+      totalPages: Math.ceil(totalCount / limit),
+    });
+  } catch (error) {
+    console.error('Error fetching entries:', error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { journalId: string } }
+) {
+  const session = await getServerSession(authOptions);
+
+  if (!session?.user?.id) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
+  const { journalId } = params;
+  const { searchParams } = new URL(req.url);
+  const entryIds = searchParams.get('ids')?.split(',') || [];
+
+  if (entryIds.length === 0) {
+    return new NextResponse("No entry IDs provided", { status: 400 });
+  }
+
+  try {
+   
+    const journal = await prisma.journal.findUnique({
+      where: {
+        id: journalId,
+        userId: session.user.id,
+      },
+    });
+
+    if (!journal) {
+      return new NextResponse("Journal not found or unauthorized", { status: 404 });
+    }
+
+    await prisma.entry.deleteMany({
+      where: {
+        id: { in: entryIds },
+        journalId: journalId,
+      },
+    });
+
+    return new NextResponse("Entries deleted successfully", { status: 200 });
+  } catch (error) {
+    console.error('Error deleting entries:', error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
