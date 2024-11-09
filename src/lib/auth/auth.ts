@@ -1,9 +1,10 @@
-
 import { AuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-import prisma from "../prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
 
+// Create a new PrismaClient instance
+const prisma = new PrismaClient();
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -53,7 +54,7 @@ export const authOptions: AuthOptions = {
       return session;
     },
     redirect({ url, baseUrl }) {
-      
+      // Fix: Use template literal syntax correctly
       return `${baseUrl}/dashboard`;
     },
   },

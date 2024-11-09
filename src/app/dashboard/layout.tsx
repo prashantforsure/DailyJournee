@@ -1,4 +1,4 @@
-
+'use client'
 import React from 'react'
 import Link from 'next/link'
 import { signOut, useSession } from "next-auth/react"
@@ -84,7 +84,7 @@ export default function DashboardLayout({
                     <Avatar className="h-8 w-8">
                     <UserAvatar
             user={{ name: session?.user?.name || null, image: session?.user?.name?.[0] || null }}
-            className="h-12 w-12 ring-2 ring-[#A259FF] hover:ring-[#1ABCFE] transition-all duration-300"
+            className="h-8 w-8 ring-2 ring-[#A259FF] hover:ring-[#1ABCFE] transition-all duration-300"
           />
                       <AvatarFallback>{session?.user?.name?.[0]}</AvatarFallback>
                     </Avatar>
