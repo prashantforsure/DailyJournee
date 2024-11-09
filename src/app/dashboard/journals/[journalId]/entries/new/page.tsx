@@ -36,10 +36,25 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
+// Define interfaces
+interface Category {
+  id: string;
+  name: string;
+}
+
+interface Tag {
+  id: string;
+  name: string;
+}
+
+interface Params {
+  journalId: string;
+}
+
+// Zod schema
 const entrySchema = z.object({
   title: z.string().min(1, "Title is required").max(255, "Title must be 255 characters or less"),
   content: z.string().min(1, "Content is required"),
@@ -50,16 +65,6 @@ const entrySchema = z.object({
 });
 
 type EntryFormData = z.infer<typeof entrySchema>;
-
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface Tag {
-  id: string;
-  name: string;
-}
 
 const moodOptions = [
   'Happy', 'Sad', 'Excited', 'Anxious', 'Calm', 'Angry', 'Neutral'
@@ -74,6 +79,8 @@ export default function NewEntryPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMediaDialogOpen, setIsMediaDialogOpen] = useState(false);
   const [mediaUrl, setMediaUrl] = useState('');
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
 
   const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<EntryFormData>({
     resolver: zodResolver(entrySchema),
@@ -115,6 +122,33 @@ export default function NewEntryPage() {
       toast.error('Failed to create entry');
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const handleEditorChange = (content: string) => {
+    const match = content.match(/\/\/(.+)/);
+    if (match) {
+      const prompt = match[1].trim();
+      setAiPrompt(prompt);
+      fetchAIResponse(prompt);
+    }
+    setValue("content", content);
+  };
+
+  const fetchAIResponse = async (prompt: string) => {
+    try {
+      interface AIResponse {
+        content: string;
+      }
+      
+      const response = await axios.post<AIResponse>("/api/ai/generate", { prompt });
+      const aiContent = response.data.content;
+      setAiResponse(aiContent);
+      setValue("content", aiContent); // Changed from template literal to direct value
+      toast.success("AI-generated content added!");
+    } catch (error) {
+      console.error('Error generating AI response:', error);
+      toast.error("Failed to generate AI response");
     }
   };
 
@@ -171,7 +205,11 @@ export default function NewEntryPage() {
                         'removeformat | help',
                       content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                     }}
-                    onEditorChange={(content) => field.onChange(content)}
+                    onEditorChange={(content: string) => {
+                      field.onChange(content);
+                      handleEditorChange(content);
+                    }}
+                    value={field.value}
                   />
                 )}
               />
@@ -254,7 +292,11 @@ export default function NewEntryPage() {
                   <Badge key={index} variant="secondary" className="flex items-center gap-2">
                     <ImageIcon className="h-4 w-4" />
                     <span className="max-w-[200px] truncate">{url}</span>
-                    <button type="button" onClick={() => handleRemoveMedia(url)} className="text-red-500 hover:text-red-700">
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveMedia(url)} 
+                      className="text-red-500 hover:text-red-700"
+                    >
                       &times;
                     </button>
                   </Badge>
