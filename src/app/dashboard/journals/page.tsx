@@ -29,6 +29,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from 'next/link';
 
 interface Journal {
   id: string;
@@ -79,9 +80,9 @@ export default function JournalsPage() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800">Your Journals</h1>
-        <Button>
+        <Link href="/dashboard/journals/new"><Button>
           <Book className="mr-2 h-4 w-4" /> New Journal
-        </Button>
+        </Button></Link>
       </div>
 
       <div className="flex space-x-2">

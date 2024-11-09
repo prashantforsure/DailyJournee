@@ -39,3 +39,14 @@ import {
       </svg>
     ),
   }
+ 
+
+import { Book, Pen, Notebook, Calendar, Star } from 'lucide-react';
+
+export const Icons1 = {
+  book: Book,
+  pen: Pen,
+  notebook: Notebook,
+  calendar: Calendar,
+  star: Star,
+};

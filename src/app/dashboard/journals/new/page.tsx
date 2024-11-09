@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Book, Loader2 } from 'lucide-react';
+import {  Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Icons } from "@/components/ui/icons";
+import { Book, Pen, Notebook, Calendar, Star } from "lucide-react";
 
 const journalSchema = z.object({
   name: z.string().min(1, "Journal name is required").max(100, "Journal name must be 100 characters or less"),
@@ -39,13 +39,25 @@ interface Category {
   name: string;
 }
 
-const iconOptions = [
-  { value: 'book', label: 'Book' },
-  { value: 'pen', label: 'Pen' },
-  { value: 'notebook', label: 'Notebook' },
-  { value: 'calendar', label: 'Calendar' },
-  { value: 'star', label: 'Star' },
-];
+type IconOption = {
+    value: keyof typeof Icons;
+    label: string;
+  };
+  const Icons = {
+    book: Book,
+    pen: Pen,
+    notebook: Notebook,
+    calendar: Calendar,
+    star: Star,
+  } as const;
+  
+  const iconOptions: IconOption[] = [
+    { value: 'book', label: 'Book' },
+    { value: 'pen', label: 'Pen' },
+    { value: 'notebook', label: 'Notebook' },
+    { value: 'calendar', label: 'Calendar' },
+    { value: 'star', label: 'Star' },
+  ];
 
 export default function NewJournalPage() {
   const router = useRouter();
@@ -139,15 +151,18 @@ export default function NewJournalPage() {
                       <SelectValue placeholder="Select an icon" />
                     </SelectTrigger>
                     <SelectContent>
-                      {iconOptions.map((icon) => (
-                        <SelectItem key={icon.value} value={icon.value}>
-                          <div className="flex items-center">
-                            <Icons.icon className="mr-2 h-4 w-4" />
-                            <span>{icon.label}</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
+      {iconOptions.map((icon) => {
+        const IconComponent = Icons[icon.value];
+        return (
+          <SelectItem key={icon.value} value={icon.value}>
+            <div className="flex items-center">
+              <IconComponent className="mr-2 h-4 w-4" />
+              <span>{icon.label}</span>
+            </div>
+          </SelectItem>
+        );
+      })}
+    </SelectContent>
                   </Select>
                 )}
               />
