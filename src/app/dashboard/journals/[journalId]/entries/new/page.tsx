@@ -137,18 +137,19 @@ export default function NewEntryPage() {
 
   const fetchAIResponse = async (prompt: string) => {
     try {
-      interface AIResponse {
-        content: string;
+      const response = await axios.post<{ content: string }>("/api/ai/generate", { prompt });
+      if (response.data.content) {
+        setAiResponse(response.data.content);
+        setValue("content", response.data.content);
+        toast.success("AI-generated content added!");
       }
-      
-      const response = await axios.post<AIResponse>("/api/ai/generate", { prompt });
-      const aiContent = response.data.content;
-      setAiResponse(aiContent);
-      setValue("content", aiContent); // Changed from template literal to direct value
-      toast.success("AI-generated content added!");
     } catch (error) {
       console.error('Error generating AI response:', error);
-      toast.error("Failed to generate AI response");
+      if (axios.isAxiosError(error) && error.response?.data?.error) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error("Failed to generate AI response");
+      }
     }
   };
 
