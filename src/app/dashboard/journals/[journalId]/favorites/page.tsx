@@ -35,7 +35,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-
+import { cn } from "@/lib/utils";
 interface FavoriteEntry {
   id: string;
   title: string;

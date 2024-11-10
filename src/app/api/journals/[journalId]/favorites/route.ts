@@ -1,9 +1,8 @@
-// app/api/journals/[journalId]/favorites/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import prisma from '@/lib/prisma';
-import { authOptions } from '@/lib/auth';
+import { authOptions } from '@/lib/auth/auth';
+
 
 export async function GET(
   req: NextRequest,
@@ -26,7 +25,9 @@ export async function GET(
     const favorites = await prisma.entry.findMany({
       where: {
         journalId: journalId,
-        userId: session.user.id,
+        journal: {
+          userId: session.user.id
+        },
         isFavorite: true,
       },
       orderBy: {
@@ -48,7 +49,9 @@ export async function GET(
     const totalCount = await prisma.entry.count({
       where: {
         journalId: journalId,
-        userId: session.user.id,
+        journal: {
+          userId: session.user.id
+        },
         isFavorite: true,
       },
     });
@@ -81,8 +84,12 @@ export async function PUT(
     const updatedEntry = await prisma.entry.update({
       where: {
         id: entryId,
-        journalId: journalId,
-        userId: session.user.id,
+        AND: {
+          journalId: journalId,
+          journal: {
+            userId: session.user.id
+          }
+        }
       },
       data: {
         isFavorite: isFavorite,

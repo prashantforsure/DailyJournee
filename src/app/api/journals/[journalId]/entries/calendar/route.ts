@@ -1,10 +1,7 @@
-// app/api/journals/[journalId]/entries/calendar/route.ts
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from "next-auth/next";
 import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth/auth';
-
 
 export async function GET(
   req: NextRequest,
@@ -32,7 +29,9 @@ export async function GET(
     const entries = await prisma.entry.findMany({
       where: {
         journalId: journalId,
-        userId: session.user.id,
+        journal: {
+          userId: session.user.id
+        },
         createdAt: {
           gte: startDate,
           lte: endDate,

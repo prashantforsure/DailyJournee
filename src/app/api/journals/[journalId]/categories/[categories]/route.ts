@@ -9,15 +9,12 @@ import { authOptions } from '@/lib/auth/auth';
 const categorySchema = z.object({
     name: z.string().min(1, "Category name is required").max(50, "Category name must be 50 characters or less"),
     color: z.string().regex(/^#[0-9A-F]{6}$/i, "Invalid color format"),
-  });
-  
-  const categoryUpdateSchema = categorySchema.extend({
-    id: z.string()
+    icon: z.string().max(50, "Icon name must be 50 characters or less").optional(),
   });
   
   export async function GET(
     req: NextRequest,
-    { params }: { params: { journalId: string } }
+    { params }: { params: { journalId: string; categoryId: string } }
   ) {
     const session = await getServerSession(authOptions);
   
@@ -25,64 +22,45 @@ const categorySchema = z.object({
       return new NextResponse("Unauthorized", { status: 401 });
     }
   
+    const { categoryId } = params;
+  
     try {
-      const categories = await prisma.category.findMany({
+      const category = await prisma.category.findUnique({
         where: {
+          id: categoryId,
           userId: session.user.id,
-          entries: {
-            some: {
-              journalId: params.journalId
-            }
-          }
         },
         include: {
-          _count: {
-            select: { entries: true },
+          entries: {
+            where: {
+              journalId: params.journalId
+            },
+            select: {
+              id: true,
+              title: true,
+              createdAt: true,
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
           },
         },
       });
   
-      return NextResponse.json(categories);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-      return new NextResponse("Internal Error", { status: 500 });
-    }
-  }
-  
-  export async function POST(
-    req: NextRequest,
-    { params }: { params: { journalId: string } }
-  ) {
-    const session = await getServerSession(authOptions);
-  
-    if (!session?.user?.id) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-  
-    try {
-      const body = await req.json();
-      const validatedData = categorySchema.parse(body);
-  
-      const newCategory = await prisma.category.create({
-        data: {
-          ...validatedData,
-          userId: session.user.id,
-        },
-      });
-  
-      return NextResponse.json(newCategory);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        return NextResponse.json({ errors: error.errors }, { status: 400 });
+      if (!category) {
+        return new NextResponse("Category not found", { status: 404 });
       }
-      console.error('Error creating category:', error);
+  
+      return NextResponse.json(category);
+    } catch (error) {
+      console.error('Error fetching category:', error);
       return new NextResponse("Internal Error", { status: 500 });
     }
   }
   
   export async function PUT(
     req: NextRequest,
-    { params }: { params: { journalId: string } }
+    { params }: { params: { journalId: string; categoryId: string } }
   ) {
     const session = await getServerSession(authOptions);
   
@@ -90,16 +68,18 @@ const categorySchema = z.object({
       return new NextResponse("Unauthorized", { status: 401 });
     }
   
+    const { categoryId } = params;
+  
     try {
       const body = await req.json();
-      const { id, ...updateData } = categoryUpdateSchema.parse(body);
+      const validatedData = categorySchema.parse(body);
   
       const updatedCategory = await prisma.category.update({
         where: {
-          id: id,
+          id: categoryId,
           userId: session.user.id,
         },
-        data: updateData,
+        data: validatedData,
       });
   
       return NextResponse.json(updatedCategory);
@@ -114,7 +94,7 @@ const categorySchema = z.object({
   
   export async function DELETE(
     req: NextRequest,
-    { params }: { params: { journalId: string } }
+    { params }: { params: { journalId: string; categoryId: string } }
   ) {
     const session = await getServerSession(authOptions);
   
@@ -122,12 +102,7 @@ const categorySchema = z.object({
       return new NextResponse("Unauthorized", { status: 401 });
     }
   
-    const { searchParams } = new URL(req.url);
-    const categoryId = searchParams.get('id');
-  
-    if (!categoryId) {
-      return new NextResponse("Category ID is required", { status: 400 });
-    }
+    const { categoryId } = params;
   
     try {
       await prisma.category.delete({
