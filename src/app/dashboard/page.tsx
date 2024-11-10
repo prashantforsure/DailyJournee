@@ -60,7 +60,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 space-y-8">
       <h1 className="text-3xl font-bold text-primary">Dashboard</h1>
       <div className="grid gap-6 md:grid-cols-3">
         <StatCard title="Total Journals" value={dashboardData.totalJournals} icon={Book} color="bg-pink-100" />

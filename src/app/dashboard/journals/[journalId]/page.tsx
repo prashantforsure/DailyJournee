@@ -213,7 +213,7 @@ export default function JournalDetailsPage() {
         <CardHeader>
           <div className="flex justify-between items-center">
             <CardTitle>Recent Entries</CardTitle>
-            <Button onClick={() => setIsNewEntryDialogOpen(true)}>
+            <Button onClick={() => router.push(`/dashboard/journals/${journal.id}/entries/new`)}>
               <PlusCircle className="mr-2 h-4 w-4" /> New Entry
             </Button>
           </div>
