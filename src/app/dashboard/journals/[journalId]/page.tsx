@@ -103,7 +103,7 @@ export default function JournalDetailsPage() {
       await axios.post(`/api/journals/${params.journalId}/entries`, newEntry);
       toast.success('Entry created successfully');
       setIsNewEntryDialogOpen(false);
-      // Refresh journal details
+     
       const response = await axios.get<JournalDetails>(`/api/journals/${params.journalId}`);
       setJournal(response.data);
     } catch (error) {
