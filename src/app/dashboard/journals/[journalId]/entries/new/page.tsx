@@ -96,7 +96,7 @@ export default function NewEntryPage() {
     const fetchData = async () => {
       try {
         const [categoriesResponse, tagsResponse] = await Promise.all([
-          axios.get<Category[]>('/api/categories'),
+          axios.get<Category[]>('/api/journals/[journalId]/categories'),
           axios.get<Tag[]>('/api/tags'),
         ]);
 
@@ -116,7 +116,7 @@ export default function NewEntryPage() {
     try {
       await axios.post(`/api/journals/${params.journalId}/entries`, data);
       toast.success('Entry created successfully!');
-      router.push(`/journals/${params.journalId}/entries`);
+      router.push(`/dashboard/journals/${params.journalId}/entries`);
     } catch (error) {
       console.error('Error creating entry:', error);
       toast.error('Failed to create entry');
