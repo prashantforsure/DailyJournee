@@ -1,25 +1,15 @@
-// app/(dashboard)/journals/[journalId]/page.tsx
-
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import axios from 'axios';
-import { format } from 'date-fns';
-import { Book, Edit, Star, Trash2, PlusCircle, BarChart2, Calendar, FileText, Heart } from 'lucide-react';
-import { toast } from 'react-hot-toast';
+import React, { useState, useEffect } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import axios from 'axios'
+import { format } from 'date-fns'
+import { Book, Edit, Star, Trash2, PlusCircle, BarChart2, FileText, Heart, MoreVertical } from 'lucide-react'
+import { toast } from 'react-hot-toast'
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import {
   Dialog,
   DialogContent,
@@ -28,112 +18,145 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 interface Entry {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  mood: string;
-  isFavorite: boolean;
+  id: string
+  title: string
+  content: string
+  createdAt: string
+  mood: string
+  isFavorite: boolean
 }
 
 interface JournalDetails {
-  id: string;
-  name: string;
-  description: string | null;
-  color: string | null;
-  icon: string | null;
-  createdAt: string;
-  updatedAt: string;
-  category: { id: string; name: string } | null;
-  entries: Entry[];
+  id: string
+  name: string
+  description: string | null
+  color: string | null
+  icon: string | null
+  createdAt: string
+  updatedAt: string
+  category: { id: string; name: string } | null
+  entries: Entry[]
   statistics: {
-    entryCount: number;
-    favoriteCount: number;
-    totalWordCount: number;
-    moodDistribution: { [key: string]: number };
-  };
+    entryCount: number
+    favoriteCount: number
+    totalWordCount: number
+    moodDistribution: { [key: string]: number }
+  }
 }
 
+const cardColors = [
+  'bg-pink-50',
+  'bg-blue-50',
+  'bg-green-50',
+  'bg-yellow-50',
+  'bg-purple-50',
+  'bg-indigo-50',
+  'bg-red-50',
+  'bg-teal-50',
+  'bg-orange-50',
+]
+
 export default function JournalDetailsPage() {
-  const params = useParams();
-  const router = useRouter();
-  const [journal, setJournal] = useState<JournalDetails | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [isNewEntryDialogOpen, setIsNewEntryDialogOpen] = useState(false);
-  const [newEntry, setNewEntry] = useState({ title: '', content: '', mood: '' });
+  const params = useParams()
+  const router = useRouter()
+  const [journal, setJournal] = useState<JournalDetails | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+  const [isNewEntryDialogOpen, setIsNewEntryDialogOpen] = useState(false)
+  const [newEntry, setNewEntry] = useState({ title: '', content: '', mood: '' })
 
   useEffect(() => {
     const fetchJournalDetails = async () => {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
-        const response = await axios.get<JournalDetails>(`/api/journals/${params.journalId}`);
-        setJournal(response.data);
+        const response = await axios.get<JournalDetails>(`/api/journals/${params.journalId}`)
+        setJournal(response.data)
       } catch (error) {
-        console.error('Error fetching journal details:', error);
-        toast.error('Failed to load journal details');
+        console.error('Error fetching journal details:', error)
+        toast.error('Failed to load journal details')
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    fetchJournalDetails();
-  }, [params.journalId]);
+    fetchJournalDetails()
+  }, [params.journalId])
 
   const handleDeleteJournal = async () => {
     try {
-      await axios.delete(`/api/journals/${params.journalId}`);
-      toast.success('Journal deleted successfully');
-      router.push('/dashboard/journals');
+      await axios.delete(`/api/journals/${params.journalId}`)
+      toast.success('Journal deleted successfully')
+      router.push('/dashboard/journals')
     } catch (error) {
-      console.error('Error deleting journal:', error);
-      toast.error('Failed to delete journal');
+      console.error('Error deleting journal:', error)
+      toast.error('Failed to delete journal')
     }
-  };
+  }
 
   const handleCreateEntry = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await axios.post(`/api/journals/${params.journalId}/entries`, newEntry);
-      toast.success('Entry created successfully');
-      setIsNewEntryDialogOpen(false);
+      await axios.post(`/api/journals/${params.journalId}/entries`, newEntry)
+      toast.success('Entry created successfully')
+      setIsNewEntryDialogOpen(false)
      
-      const response = await axios.get<JournalDetails>(`/api/journals/${params.journalId}`);
-      setJournal(response.data);
+      const response = await axios.get<JournalDetails>(`/api/journals/${params.journalId}`)
+      setJournal(response.data)
     } catch (error) {
-      console.error('Error creating entry:', error);
-      toast.error('Failed to create entry');
+      console.error('Error creating entry:', error)
+      toast.error('Failed to create entry')
     }
-  };
+  }
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">Loading...</div>
   }
 
   if (!journal) {
-    return <div className="flex justify-center items-center h-screen">Journal not found</div>;
+    return <div className="flex justify-center items-center h-screen">Journal not found</div>
   }
 
   return (
-    <div className="container mx-auto py-10 space-y-8">
+    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold" style={{ color: journal.color || undefined }}>
+        <h1 className="text-3xl font-bold text-primary">
           {journal.icon && <span className="mr-2">{journal.icon}</span>}
           {journal.name}
         </h1>
-        <div className="space-x-2">
-          <Button onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)}>
+        <div className="flex items-center space-x-2">
+          <Button onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)} className="hidden sm:inline-flex">
             <Edit className="mr-2 h-4 w-4" /> Edit Journal
           </Button>
-          <Button variant="destructive" onClick={() => setIsDeleteDialogOpen(true)}>
+          <Button variant="destructive" onClick={() => setIsDeleteDialogOpen(true)} className="hidden sm:inline-flex">
             <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
           </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon" className="sm:hidden">
+                <MoreVertical className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)}>
+                <Edit className="mr-2 h-4 w-4" /> Edit Journal
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
+                <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
@@ -146,7 +169,7 @@ export default function JournalDetailsPage() {
       )}
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className={cardColors[0]}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Entries</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
@@ -155,7 +178,7 @@ export default function JournalDetailsPage() {
             <div className="text-2xl font-bold">{journal.statistics.entryCount}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={cardColors[1]}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Favorite Entries</CardTitle>
             <Heart className="h-4 w-4 text-muted-foreground" />
@@ -164,7 +187,7 @@ export default function JournalDetailsPage() {
             <div className="text-2xl font-bold">{journal.statistics.favoriteCount}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={cardColors[2]}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Words</CardTitle>
             <FileText className="h-4 w-4 text-muted-foreground" />
@@ -173,7 +196,7 @@ export default function JournalDetailsPage() {
             <div className="text-2xl font-bold">{journal.statistics.totalWordCount}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className={cardColors[3]}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Most Common Mood</CardTitle>
             <BarChart2 className="h-4 w-4 text-muted-foreground" />
@@ -196,32 +219,26 @@ export default function JournalDetailsPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Title</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Mood</TableHead>
-                <TableHead>Favorite</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {journal.entries.map((entry) => (
-                <TableRow key={entry.id}>
-                  <TableCell className="font-medium">{entry.title}</TableCell>
-                  <TableCell>{format(new Date(entry.createdAt), 'MMM d, yyyy')}</TableCell>
-                  <TableCell>{entry.mood}</TableCell>
-                  <TableCell>{entry.isFavorite ? <Star className="text-yellow-400" /> : null}</TableCell>
-                  <TableCell>
-                    <Button variant="ghost" onClick={() => router.push(`/dashboard/journals/${journal.id}/entries/${entry.id}`)}>
-                      View
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {journal.entries.map((entry, index) => (
+              <Card 
+                key={entry.id} 
+                className={`${cardColors[index % cardColors.length]} hover:shadow-lg transition-shadow duration-300 cursor-pointer`}
+                onClick={() => router.push(`/dashboard/journals/${journal.id}/entries/${entry.id}`)}
+              >
+                <CardHeader>
+                  <CardTitle className="text-lg">{entry.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 line-clamp-3">{entry.content}</p>
+                </CardContent>
+                <CardFooter className="flex justify-between items-center">
+                  <span className="text-xs text-gray-500">{format(new Date(entry.createdAt), 'MMM d, yyyy')}</span>
+                  {entry.isFavorite && <Star className="h-4 w-4 text-yellow-400" />}
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </CardContent>
         <CardFooter>
           <Button variant="outline" className="w-full" onClick={() => router.push(`/dashboard/journals/${journal.id}/entries`)}>
@@ -286,5 +303,5 @@ export default function JournalDetailsPage() {
         </DialogContent>
       </Dialog>
     </div>
-  );
+  )
 }
