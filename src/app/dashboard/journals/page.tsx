@@ -102,6 +102,7 @@ export default function JournalsPage() {
                 className="pl-10"
               />
             </div>
+            <div className='flex gap-x-3'>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" className="w-full sm:w-auto">
@@ -120,25 +121,16 @@ export default function JournalsPage() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <Select value={sort} onValueChange={(value) => handleSort(value as typeof sort)}>
-              <SelectTrigger className="w-full sm:w-[180px]">
-                <SelectValue placeholder="Sort by" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="name">Name</SelectItem>
-                <SelectItem value="createdAt">Created Date</SelectItem>
-                <SelectItem value="updatedAt">Updated Date</SelectItem>
-                <SelectItem value="entryCount">Entry Count</SelectItem>
-              </SelectContent>
-            </Select>
+        
             <Button variant="outline" onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')} className="w-full sm:w-auto">
               {order === 'asc' ? <SortAsc className="h-4 w-4 mr-2" /> : <SortDesc className="h-4 w-4 mr-2" />}
               {order === 'asc' ? 'Ascending' : 'Descending'}
             </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
-
+     
       <Card className="bg-white shadow-sm">
         <CardContent className="p-0">
           {isLoading ? (
