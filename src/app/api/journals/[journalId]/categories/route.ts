@@ -15,23 +15,27 @@ const categorySchema = z.object({
     id: z.string()
   });
   
+ 
+  
   export async function GET(
-    req: NextRequest,
-    { params }: { params: { journalId: string } }
+    request: NextRequest,
+    context: { params: { journalId: Promise<string> } }
   ) {
-    const session = await getServerSession(authOptions);
-  
-    if (!session?.user?.id) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
-  
     try {
+      // First await the params
+      const journalId = await context.params.journalId;
+      const session = await getServerSession(authOptions);
+      
+      if (!session?.user?.id) {
+        return new NextResponse("Unauthorized", { status: 401 });
+      }
+  
       const categories = await prisma.category.findMany({
         where: {
           userId: session.user.id,
           entries: {
             some: {
-              journalId: params.journalId
+              journalId
             }
           }
         },
@@ -48,7 +52,6 @@ const categorySchema = z.object({
       return new NextResponse("Internal Error", { status: 500 });
     }
   }
-  
   export async function POST(
     req: NextRequest,
     { params }: { params: { journalId: string } }

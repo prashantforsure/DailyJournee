@@ -203,26 +203,41 @@ export default function FavoritesPage() {
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => handlePageChange(currentPage - 1)}
-                  disabled={currentPage === 1}
-                />
+                {currentPage === 1 ? (
+                  <PaginationPrevious 
+                    className="pointer-events-none opacity-50" 
+                    href="#"
+                  />
+                ) : (
+                  <PaginationPrevious 
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    href="#"
+                  />
+                )}
               </PaginationItem>
               {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                 <PaginationItem key={page}>
                   <PaginationLink
                     onClick={() => handlePageChange(page)}
                     isActive={currentPage === page}
+                    href="#"
                   >
                     {page}
                   </PaginationLink>
                 </PaginationItem>
               ))}
               <PaginationItem>
-                <PaginationNext
-                  onClick={() => handlePageChange(currentPage + 1)}
-                  disabled={currentPage === totalPages}
-                />
+                {currentPage === totalPages ? (
+                  <PaginationNext 
+                    className="pointer-events-none opacity-50" 
+                    href="#"
+                  />
+                ) : (
+                  <PaginationNext 
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    href="#"
+                  />
+                )}
               </PaginationItem>
             </PaginationContent>
           </Pagination>

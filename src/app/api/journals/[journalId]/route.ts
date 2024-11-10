@@ -47,17 +47,18 @@ export async function DELETE(
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  context: { params: { journalId: string } }
 ) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.id) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
-  const { journalId } = params;
-
   try {
+    // Wait for the params to be available
+    const journalId = context.params.journalId;
+    
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.id) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     const journal = await prisma.journal.findUnique({
       where: {
         id: journalId,
@@ -107,7 +108,6 @@ export async function GET(
       where: { journalId: journal.id, isFavorite: true },
     });
 
-   
     const entries = await prisma.entry.findMany({
       where: { journalId: journal.id },
       select: { content: true },
@@ -142,7 +142,6 @@ export async function GET(
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-
 
 const journalSchema = z.object({
   name: z.string().min(1, "Journal name is required").max(100, "Journal name must be 100 characters or less"),

@@ -71,7 +71,7 @@ export default function NewJournalPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get<Category[]>('/api/categories')
+        const response = await axios.get<Category[]>('/api/journals/[journalId]/categories')
         setCategories(response.data)
       } catch (error) {
         console.error('Error fetching categories:', error)
