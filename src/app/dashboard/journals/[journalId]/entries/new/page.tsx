@@ -152,7 +152,7 @@ export default function NewEntryPage() {
         console.error('Error saving draft:', error);
         setSaveStatus('Save failed');
       }
-    }, 1000),
+    }, 5000),
     [params.journalId]
   );
 

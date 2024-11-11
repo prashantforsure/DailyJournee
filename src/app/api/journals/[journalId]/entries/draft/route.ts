@@ -52,7 +52,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { journalId } = params;
+    const { journalId } =  params;
     if (!journalId) {
       return NextResponse.json({ error: 'Journal ID is required' }, { status: 400 });
     }
