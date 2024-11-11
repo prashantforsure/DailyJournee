@@ -1,16 +1,14 @@
 'use client'
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
-import { Editor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
+import { Editor } from '@tinymce/tinymce-react';
 import { debounce } from 'lodash';
-
 import { 
   Save, 
   Loader2, 
@@ -18,7 +16,8 @@ import {
   Smile, 
   Tag, 
   Folder,
-  AlertTriangle
+  AlertTriangle,
+  Wand2
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -51,9 +50,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useEditor, EditorContent } from '@tiptap/react';
+
 interface Category {
   id: string;
   name: string;
@@ -78,24 +76,6 @@ type EntryFormData = z.infer<typeof entrySchema>;
 const moodOptions = [
   'Happy', 'Sad', 'Excited', 'Anxious', 'Calm', 'Angry', 'Neutral'
 ];
-const TipTapEditor: React.FC<{ 
-  content: string; 
-  onChange: (html: string) => void;
-}> = ({ content, onChange }) => {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: content,
-    onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
-    },
-  });
-
-  return (
-    <div className="min-h-[200px] border rounded-md p-4">
-      <EditorContent editor={editor} />
-    </div>
-  );
-};
 
 export default function NewEntryPage() {
   const params = useParams();
@@ -110,6 +90,8 @@ export default function NewEntryPage() {
   const [localVersion, setLocalVersion] = useState<EntryFormData | null>(null);
   const [cloudVersion, setCloudVersion] = useState<EntryFormData | null>(null);
   const [isConflictDialogOpen, setIsConflictDialogOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const editorRef = useRef<any>(null);
 
   const { register, handleSubmit, control, setValue, watch, reset, formState: { errors } } = useForm<EntryFormData>({
     resolver: zodResolver(entrySchema),
@@ -189,8 +171,8 @@ export default function NewEntryPage() {
     }
   };
 
-  const handleEditorChange = (newContent: string) => {
-    setValue("content", newContent);
+  const handleEditorChange = (content: string) => {
+    setValue("content", content);
     const currentData = watch();
     debouncedSave(currentData);
   };
@@ -218,6 +200,28 @@ export default function NewEntryPage() {
     if (cloudVersion) {
       reset(cloudVersion);
       setIsConflictDialogOpen(false);
+    }
+  };
+
+  const handleGenerateContent = async () => {
+    if (editorRef.current) {
+      const editor = editorRef.current;
+      const selection = editor.selection.getContent();
+      const prompt = selection || "Generate a journal entry";
+
+      setIsGenerating(true);
+      try {
+        const response = await axios.post('/api/ai/generate', { prompt });
+        const generatedContent = response.data.content;
+        editor.selection.setContent(generatedContent);
+        setValue("content", editor.getContent());
+        toast.success('Content generated successfully!');
+      } catch (error) {
+        console.error('Error generating content:', error);
+        toast.error('Failed to generate content');
+      } finally {
+        setIsGenerating(false);
+      }
     }
   };
 
@@ -251,16 +255,52 @@ export default function NewEntryPage() {
                 name="content"
                 control={control}
                 render={({ field }) => (
-                  <TipTapEditor
-                    content={field.value}
-                    onChange={(newContent) => {
-                      field.onChange(newContent);
-                      handleEditorChange(newContent);
+                  <Editor
+                    key={field.value}
+                    apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+                    onInit={(evt, editor) => editorRef.current = editor}
+                    initialValue={field.value}
+                    init={{
+                      height: 500,
+                      menubar: false,
+                      plugins: [
+                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                      ],
+                      toolbar: 'undo redo | blocks | ' +
+                        'bold italic forecolor | alignleft aligncenter ' +
+                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                        'removeformat | help',
+                      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+                      directionality: 'ltr',
+                    }}
+                    onEditorChange={(content) => {
+                      field.onChange(content);
+                      handleEditorChange(content);
                     }}
                   />
                 )}
               />
               {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
+              <Button 
+                type="button" 
+                onClick={handleGenerateContent} 
+                disabled={isGenerating}
+                className="mt-2"
+              >
+                {isGenerating ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Wand2 className="mr-2 h-4 w-4" />
+                    Generate Content
+                  </>
+                )}
+              </Button>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

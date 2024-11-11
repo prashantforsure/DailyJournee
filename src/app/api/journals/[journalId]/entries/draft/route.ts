@@ -40,19 +40,23 @@ export async function GET(
   }
 }
 
+
+
 export async function POST(
   req: NextRequest,
   { params }: { params: { journalId: string } }
 ) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.id) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
-  const { journalId } = params;
-
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { journalId } = params;
+    if (!journalId) {
+      return NextResponse.json({ error: 'Journal ID is required' }, { status: 400 });
+    }
+
     const content = await req.json();
 
     const draft = await prisma.entryDraft.upsert({
@@ -75,6 +79,6 @@ export async function POST(
     return NextResponse.json(draft);
   } catch (error) {
     console.error('Error saving draft:', error);
-    return new NextResponse("Internal Error", { status: 500 });
+    return NextResponse.json({ error: 'Failed to save draft' }, { status: 500 });
   }
 }
