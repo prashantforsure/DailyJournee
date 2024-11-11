@@ -53,6 +53,7 @@
     "react-draft-wysiwyg": "^1.15.0",
     "react-hook-form": "^7.53.2",
     "react-hot-toast": "^2.4.1",
+    "react-quill": "^2.0.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8"
