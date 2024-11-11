@@ -1,20 +1,24 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { debounce } from 'lodash';
+
 import { 
   Save, 
   Loader2, 
   Image as ImageIcon, 
   Smile, 
   Tag, 
-  Folder
+  Folder,
+  AlertTriangle
 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -38,8 +42,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-
-// Define interfaces
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useEditor, EditorContent } from '@tiptap/react';
 interface Category {
   id: string;
   name: string;
@@ -50,11 +64,6 @@ interface Tag {
   name: string;
 }
 
-interface Params {
-  journalId: string;
-}
-
-// Zod schema
 const entrySchema = z.object({
   title: z.string().min(1, "Title is required").max(255, "Title must be 255 characters or less"),
   content: z.string().min(1, "Content is required"),
@@ -69,6 +78,24 @@ type EntryFormData = z.infer<typeof entrySchema>;
 const moodOptions = [
   'Happy', 'Sad', 'Excited', 'Anxious', 'Calm', 'Angry', 'Neutral'
 ];
+const TipTapEditor: React.FC<{ 
+  content: string; 
+  onChange: (html: string) => void;
+}> = ({ content, onChange }) => {
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: content,
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML());
+    },
+  });
+
+  return (
+    <div className="min-h-[200px] border rounded-md p-4">
+      <EditorContent editor={editor} />
+    </div>
+  );
+};
 
 export default function NewEntryPage() {
   const params = useParams();
@@ -79,10 +106,12 @@ export default function NewEntryPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isMediaDialogOpen, setIsMediaDialogOpen] = useState(false);
   const [mediaUrl, setMediaUrl] = useState('');
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
+  const [saveStatus, setSaveStatus] = useState('Not saved');
+  const [localVersion, setLocalVersion] = useState<EntryFormData | null>(null);
+  const [cloudVersion, setCloudVersion] = useState<EntryFormData | null>(null);
+  const [isConflictDialogOpen, setIsConflictDialogOpen] = useState(false);
 
-  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<EntryFormData>({
+  const { register, handleSubmit, control, setValue, watch, reset, formState: { errors } } = useForm<EntryFormData>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
       tagIds: [],
@@ -102,6 +131,25 @@ export default function NewEntryPage() {
 
         setCategories(categoriesResponse.data);
         setTags(tagsResponse.data);
+
+        // Load local version from localStorage
+        const localData = localStorage.getItem(`entry_${params.journalId}`);
+        if (localData) {
+          const parsedLocalData = JSON.parse(localData);
+          setLocalVersion(parsedLocalData);
+          reset(parsedLocalData);
+        }
+
+        // Load cloud version
+        const cloudResponse = await axios.get(`/api/journals/${params.journalId}/entries/draft`);
+        if (cloudResponse.data) {
+          setCloudVersion(cloudResponse.data);
+          if (!localData) {
+            reset(cloudResponse.data);
+          } else {
+            setIsConflictDialogOpen(true);
+          }
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
         toast.error('Failed to load categories and tags');
@@ -109,13 +157,29 @@ export default function NewEntryPage() {
     };
 
     fetchData();
-  }, []);
+  }, [params.journalId, reset]);
+
+  const debouncedSave = useCallback(
+    debounce(async (data: EntryFormData) => {
+      try {
+        setSaveStatus('Saving...');
+        await axios.post(`/api/journals/${params.journalId}/entries/draft`, data);
+        setSaveStatus('Saved');
+        localStorage.setItem(`entry_${params.journalId}`, JSON.stringify(data));
+      } catch (error) {
+        console.error('Error saving draft:', error);
+        setSaveStatus('Save failed');
+      }
+    }, 1000),
+    [params.journalId]
+  );
 
   const onSubmit = async (data: EntryFormData) => {
     setIsSubmitting(true);
     try {
       await axios.post(`/api/journals/${params.journalId}/entries`, data);
       toast.success('Entry created successfully!');
+      localStorage.removeItem(`entry_${params.journalId}`);
       router.push(`/dashboard/journals/${params.journalId}/entries`);
     } catch (error) {
       console.error('Error creating entry:', error);
@@ -125,32 +189,10 @@ export default function NewEntryPage() {
     }
   };
 
-  const handleEditorChange = (content: string) => {
-    const match = content.match(/\/\/(.+)/);
-    if (match) {
-      const prompt = match[1].trim();
-      setAiPrompt(prompt);
-      fetchAIResponse(prompt);
-    }
-    setValue("content", content);
-  };
-
-  const fetchAIResponse = async (prompt: string) => {
-    try {
-      const response = await axios.post<{ content: string }>("/api/ai/generate", { prompt });
-      if (response.data.content) {
-        setAiResponse(response.data.content);
-        setValue("content", response.data.content);
-        toast.success("AI-generated content added!");
-      }
-    } catch (error) {
-      console.error('Error generating AI response:', error);
-      if (axios.isAxiosError(error) && error.response?.data?.error) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error("Failed to generate AI response");
-      }
-    }
+  const handleEditorChange = (newContent: string) => {
+    setValue("content", newContent);
+    const currentData = watch();
+    debouncedSave(currentData);
   };
 
   const handleAddMedia = () => {
@@ -165,11 +207,26 @@ export default function NewEntryPage() {
     setValue('mediaUrls', watchedMediaUrls?.filter(url => url !== urlToRemove) || []);
   };
 
+  const handleUseLocalVersion = () => {
+    if (localVersion) {
+      reset(localVersion);
+      setIsConflictDialogOpen(false);
+    }
+  };
+
+  const handleUseCloudVersion = () => {
+    if (cloudVersion) {
+      reset(cloudVersion);
+      setIsConflictDialogOpen(false);
+    }
+  };
+
   return (
     <div className="container mx-auto py-10">
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
           <CardTitle className="text-3xl font-bold">New Entry</CardTitle>
+          <div className="text-sm text-gray-500">{saveStatus}</div>
         </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-6">
@@ -180,6 +237,10 @@ export default function NewEntryPage() {
                 {...register('title')}
                 className="text-xl font-semibold"
                 placeholder="Enter your entry title..."
+                onChange={(e) => {
+                  setValue('title', e.target.value);
+                  debouncedSave(watch());
+                }}
               />
               {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
             </div>
@@ -190,27 +251,12 @@ export default function NewEntryPage() {
                 name="content"
                 control={control}
                 render={({ field }) => (
-                  <Editor
-                    apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
-                    init={{
-                      height: 500,
-                      menubar: false,
-                      plugins: [
-                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                      ],
-                      toolbar: 'undo redo | blocks | ' +
-                        'bold italic forecolor | alignleft aligncenter ' +
-                        'alignright alignjustify | bullist numlist outdent indent | ' +
-                        'removeformat | help',
-                      content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                  <TipTapEditor
+                    content={field.value}
+                    onChange={(newContent) => {
+                      field.onChange(newContent);
+                      handleEditorChange(newContent);
                     }}
-                    onEditorChange={(content: string) => {
-                      field.onChange(content);
-                      handleEditorChange(content);
-                    }}
-                    value={field.value}
                   />
                 )}
               />
@@ -224,7 +270,13 @@ export default function NewEntryPage() {
                   name="mood"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select 
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        debouncedSave(watch());
+                      }} 
+                      value={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select your mood" />
                       </SelectTrigger>
@@ -249,7 +301,13 @@ export default function NewEntryPage() {
                   name="categoryId"
                   control={control}
                   render={({ field }) => (
-                    <Select onValueChange={field.onChange} value={field.value}>
+                    <Select 
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        debouncedSave(watch());
+                      }} 
+                      value={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
@@ -278,6 +336,15 @@ export default function NewEntryPage() {
                       type="checkbox"
                       value={tag.id}
                       {...register('tagIds')}
+                      onChange={(e) => {
+                        const tagIds = watch('tagIds') || [];
+                        if (e.target.checked) {
+                          setValue('tagIds', [...tagIds, tag.id]);
+                        } else {
+                          setValue('tagIds', tagIds.filter(id => id !== tag.id));
+                        }
+                        debouncedSave(watch());
+                      }}
                       className="form-checkbox h-4 w-4 text-blue-600"
                     />
                     <span>{tag.name}</span>
@@ -349,6 +416,22 @@ export default function NewEntryPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={isConflictDialogOpen} onOpenChange={setIsConflictDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Version Conflict</AlertDialogTitle>
+            <AlertDialogDescription>
+              There is a difference between the local version and the cloud version of this entry.
+              Which version would you like to use?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleUseLocalVersion}>Use Local Version</AlertDialogCancel>
+            <AlertDialogAction onClick={handleUseCloudVersion}>Use Cloud Version</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

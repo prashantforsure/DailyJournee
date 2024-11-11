@@ -62,6 +62,7 @@ model User {
   journals      Journal[]
   categories    Category[]
   preferences   UserPreferences?
+  entryDrafts EntryDraft[]
 }
 
 model UserPreferences {
@@ -86,8 +87,8 @@ model Journal {
   userId      String
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   entries     Entry[]
+  entryDrafts EntryDraft[]  
 }
-
 model Entry {
   id           String    @id @default(cuid())
   title        String
@@ -122,9 +123,21 @@ model Tag {
 
 model Media {
   id            String    @id @default(cuid())
-  type          String    // image, audio, video
+  type          String    
   url           String
-  transcription String?   // For voice notes
+  transcription String?   
   createdAt     DateTime  @default(now())
   entries       Entry[]
+}
+model EntryDraft {
+  id        String   @id @default(cuid())
+  content   Json     // Stores the draft content as JSON
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  journalId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  journal   Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, journalId])
 }

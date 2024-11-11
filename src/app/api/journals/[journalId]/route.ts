@@ -50,7 +50,7 @@ export async function GET(
   context: { params: { journalId: string } }
 ) {
   try {
-    // Wait for the params to be available
+    
     const journalId = context.params.journalId;
     
     const session = await getServerSession(authOptions);
