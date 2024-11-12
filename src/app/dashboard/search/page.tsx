@@ -33,7 +33,7 @@ import {
   PopoverContent, 
   PopoverTrigger 
 } from "@/components/ui/popover"
-import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+
 import { 
   Card, 
   CardContent, 
@@ -53,6 +53,7 @@ import {
   DialogTrigger 
 } from "@/components/ui/dialog"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Calendar1 } from "@/components/ui/calendar"
 
 interface SearchResult {
   id: string
@@ -270,11 +271,11 @@ export default function SearchPage() {
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <CalendarComponent
+                    <Calendar1
                       mode="single"
                       selected={startDate}
                       onSelect={setStartDate}
-                      initialFocus
+                     
                     />
                   </PopoverContent>
                 </Popover>
@@ -292,11 +293,11 @@ export default function SearchPage() {
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
-                    <CalendarComponent
+                    <Calendar1
                       mode="single"
                       selected={endDate}
                       onSelect={setEndDate}
-                      initialFocus
+                     
                     />
                   </PopoverContent>
                 </Popover>

@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const sortOrder = searchParams.get('sortOrder') || 'desc'
 
   try {
-    const entries = await prisma.journalEntry.findMany({
+    const entries = await prisma.entry.findMany({
       where: {
         AND: [
           q ? {
@@ -29,6 +29,9 @@ export async function GET(req: Request) {
       },
       include: {
         category: true,
+        journal: true,
+        tags: true,
+        media: true,
       },
       orderBy: {
         [sortBy]: sortOrder,
