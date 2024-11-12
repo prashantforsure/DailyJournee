@@ -197,16 +197,20 @@ export default function JournalDetailsPage() {
           </CardContent>
         </Card>
         <Card className={cardColors[3]}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Most Common Mood</CardTitle>
-            <BarChart2 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {Object.entries(journal.statistics.moodDistribution).reduce((a, b) => a[1] > b[1] ? a : b)[0]}
-            </div>
-          </CardContent>
-        </Card>
+  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+    <CardTitle className="text-sm font-medium">Most Common Mood</CardTitle>
+    <BarChart2 className="h-4 w-4 text-muted-foreground" />
+  </CardHeader>
+  <CardContent>
+    <div className="text-2xl font-bold">
+      {Object.keys(journal.statistics.moodDistribution).length > 0 ? (
+        Object.entries(journal.statistics.moodDistribution).reduce((a, b) => a[1] > b[1] ? a : b)[0]
+      ) : (
+        'N/A'
+      )}
+    </div>
+  </CardContent>
+</Card>
       </div>
 
       <Card>

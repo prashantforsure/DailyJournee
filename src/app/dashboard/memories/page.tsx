@@ -202,44 +202,48 @@ export default function MemoriesPage() {
       )}
 
       <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-800">Yearly Review</h2>
-      {yearlyReviews.map((review) => (
-        <Card key={review.year} className="mb-6 bg-white shadow-md">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-gray-700">{review.year} in Review</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <h3 className="text-lg font-semibold mb-2 text-gray-700">Journal Stats</h3>
-                <p className="text-gray-600">Total Entries: {review.totalEntries}</p>
-                <h4 className="text-md font-semibold mt-4 mb-2 text-gray-700">Top Moods</h4>
-                <ul className="list-disc list-inside">
-                  {review.topMoods.map((mood, index) => (
-                    <li key={index} className="text-gray-600">{mood.mood}: {mood.count} entries</li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h4 className="text-md font-semibold mb-2 text-gray-700">Top Categories</h4>
-                <ul className="list-disc list-inside">
-                  {review.topCategories.map((category, index) => (
-                    <li key={index} className="text-gray-600">{category.category}: {category.count} entries</li>
-                  ))}
-                </ul>
-              </div>
+      {yearlyReviews.length > 0 ? (
+    yearlyReviews.map((review) => (
+      <Card key={review.year} className="mb-6 bg-white shadow-md">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold text-gray-700">{review.year} in Review</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <h3 className="text-lg font-semibold mb-2 text-gray-700">Journal Stats</h3>
+              <p className="text-gray-600">Total Entries: {review.totalEntries}</p>
+              <h4 className="text-md font-semibold mt-4 mb-2 text-gray-700">Top Moods</h4>
+              <ul className="list-disc list-inside">
+                {review.topMoods.map((mood, index) => (
+                  <li key={index} className="text-gray-600">{mood.mood}: {mood.count} entries</li>
+                ))}
+              </ul>
             </div>
-          </CardContent>
-          <CardFooter>
-            <Button 
-              onClick={() => router.push(`/journals/yearly-review/${review.year}`)}
-              className="w-full bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200"
-            >
-              <TrendingUp className="mr-2 h-4 w-4" />
-              View Detailed Review
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
+            <div>
+              <h4 className="text-md font-semibold mb-2 text-gray-700">Top Categories</h4>
+              <ul className="list-disc list-inside">
+                {review.topCategories.map((category, index) => (
+                  <li key={index} className="text-gray-600">{category.category}: {category.count} entries</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </CardContent>
+        <CardFooter>
+          <Button
+            onClick={() => router.push(`/journals/yearly-review/${review.year}`)}
+            className="w-full bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200"
+          >
+            <TrendingUp className="mr-2 h-4 w-4" />
+            View Detailed Review
+          </Button>
+        </CardFooter>
+      </Card>
+    ))
+  ) : (
+    <p className="text-center text-gray-500">No yearly reviews available.</p>
+  )}
 
       <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-800">Time Capsules</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
