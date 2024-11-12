@@ -128,8 +128,8 @@ export default function NewEntryPage() {
   const handleGenerateContent = async () => {
     setIsGenerating(true);
     try {
-      const content = watch('content'); // Get the current value of the content textarea
-      const response = await axios.post('/api/ai/generate', { prompt: content }); // Pass the current content as the prompt
+      const content = watch('content'); 
+      const response = await axios.post('/api/ai/generate', { prompt: content });
       const generatedContent = response.data.content;
       setValue("content", generatedContent, { shouldValidate: true });
       toast.success('Content generated successfully!');

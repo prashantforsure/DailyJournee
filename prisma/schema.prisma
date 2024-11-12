@@ -62,7 +62,17 @@ model User {
   journals      Journal[]
   categories    Category[]
   preferences   UserPreferences?
+  savedSearches SavedSearch[]
   entryDrafts EntryDraft[]
+}
+model SavedSearch {
+  id        String   @id @default(cuid())
+  name      String
+  query     String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model UserPreferences {
