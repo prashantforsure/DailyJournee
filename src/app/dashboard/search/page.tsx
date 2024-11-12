@@ -102,7 +102,6 @@ export default function SearchPage() {
         setCategories(categoriesResponse.data)
         setSavedSearches(savedSearchesResponse.data)
 
-        // Set initial search parameters from URL
         const initialSearchTerm = searchParams.get('q') || ''
         const initialStartDate = searchParams.get('startDate') ? new Date(searchParams.get('startDate')!) : undefined
         const initialEndDate = searchParams.get('endDate') ? new Date(searchParams.get('endDate')!) : undefined
@@ -169,7 +168,7 @@ export default function SearchPage() {
       category: selectedCategory
     })
 
-    // Update URL with search parameters
+ 
     const searchParams = new URLSearchParams()
     if (searchTerm) searchParams.set('q', searchTerm)
     if (startDate) searchParams.set('startDate', startDate.toISOString())
