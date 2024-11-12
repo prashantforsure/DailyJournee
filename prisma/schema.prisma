@@ -64,6 +64,8 @@ model User {
   preferences   UserPreferences?
   savedSearches SavedSearch[]
   entryDrafts EntryDraft[]
+  entries Entry[]
+    timeCapsules TimeCapsule[]
 }
 model SavedSearch {
   id        String   @id @default(cuid())
@@ -97,6 +99,7 @@ model Journal {
   userId      String
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   entries     Entry[]
+   timeCapsules TimeCapsule[]
   entryDrafts EntryDraft[]  
 }
 model Entry {
@@ -114,6 +117,9 @@ model Entry {
   category     Category? @relation(fields: [categoryId], references: [id])
   media        Media[]
   tags         Tag[]
+   userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isTimeCapsule Boolean @default(false)
 }
 
 model Category {
@@ -150,4 +156,16 @@ model EntryDraft {
   journal   Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
 
   @@unique([userId, journalId])
+}
+
+model TimeCapsule {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  openDate  DateTime
+  userId    String
+  journalId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  journal   Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
 }
