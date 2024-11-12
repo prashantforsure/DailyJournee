@@ -31,8 +31,8 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       data: {
         title: timeCapsule.title,
         content: timeCapsule.content,
-        userId: session.user.id,  
-        journal: { connect: { id: timeCapsule.journalId } },
+        userId: session.user.id,   
+        journalId: timeCapsule.journalId, 
         isTimeCapsule: true,
       },
     })

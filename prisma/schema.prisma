@@ -64,7 +64,7 @@ model User {
   preferences   UserPreferences?
   savedSearches SavedSearch[]
   entryDrafts EntryDraft[]
-  entries Entry[]
+  enrty Entry[]
     timeCapsules TimeCapsule[]
 }
 model SavedSearch {
@@ -117,7 +117,7 @@ model Entry {
   category     Category? @relation(fields: [categoryId], references: [id])
   media        Media[]
   tags         Tag[]
-   userId       String
+userId       String
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   isTimeCapsule Boolean @default(false)
 }
