@@ -21,7 +21,8 @@ import {
   ChevronUp,
   Github,
   Twitter,
-  Linkedin
+  Linkedin,
+  Menu
 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
@@ -30,24 +31,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Link from 'next/link'
-
 //@ts-expect-error there is some type error
 const FeatureCard = ({ icon, title, description }) => (
-  <Card className="bg-[#24272c] shadow-md hover:shadow-lg transition-shadow duration-300 border-[#3a3f4b]">
-    <CardHeader>
-      <div className="w-12 h-12 bg-[#3a3f4b] rounded-full flex items-center justify-center mb-4">
-        {icon}
-      </div>
-      <CardTitle className="text-xl font-semibold text-[#e0e0e0]">{title}</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <CardDescription className="text-[#9a9897]">{description}</CardDescription>
-    </CardContent>
-  </Card>
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <Card className="bg-[#24272c] shadow-md hover:shadow-lg transition-shadow duration-300 border-[#3a3f4b]">
+      <CardHeader>
+        <div className="w-12 h-12 bg-[#3a3f4b] rounded-full flex items-center justify-center mb-4">
+          {icon}
+        </div>
+        <CardTitle className="text-xl font-semibold text-[#e0e0e0]">{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <CardDescription className="text-[#9a9897]">{description}</CardDescription>
+      </CardContent>
+    </Card>
+  </motion.div>
 )
 //@ts-expect-error there is some type error
 const BenefitItem = ({ icon, title, description }) => (
-  <div className="flex items-start space-x-4">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    className="flex items-start space-x-4"
+  >
     <div className="w-10 h-10 bg-[#3a3f4b] rounded-full flex items-center justify-center flex-shrink-0">
       {icon}
     </div>
@@ -55,33 +65,39 @@ const BenefitItem = ({ icon, title, description }) => (
       <h3 className="text-lg font-semibold text-[#e0e0e0] mb-2">{title}</h3>
       <p className="text-[#9a9897]">{description}</p>
     </div>
-  </div>
+  </motion.div>
 )
 //@ts-expect-error there is some type error
 const TestimonialCard = ({ name, image, quote }) => (
-  <Card className="bg-[#24272c] shadow-md hover:shadow-lg transition-shadow duration-300 border-[#3a3f4b]">
-    <CardHeader>
-      <div className="flex items-center space-x-4">
-        <Image
-          src={image}
-          alt={name}
-          width={50}
-          height={50}
-          className="rounded-full"
-        />
-        <CardTitle className="text-lg font-semibold text-[#e0e0e0]">{name}</CardTitle>
-      </div>
-    </CardHeader>
-    <CardContent>
-      <CardDescription className="text-[#9a9897] italic">&ldquo;{quote}&rdquo;</CardDescription>
-    </CardContent>
-  </Card>
+  <motion.div
+    whileHover={{ scale: 1.05 }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <Card className="bg-[#24272c] shadow-md hover:shadow-lg transition-shadow duration-300 border-[#3a3f4b]">
+      <CardHeader>
+        <div className="flex items-center space-x-4">
+          <Image
+            src={image}
+            alt={name}
+            width={50}
+            height={50}
+            className="rounded-full"
+          />
+          <CardTitle className="text-lg font-semibold text-[#e0e0e0]">{name}</CardTitle>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <CardDescription className="text-[#9a9897] italic">&ldquo;{quote}&rdquo;</CardDescription>
+      </CardContent>
+    </Card>
+  </motion.div>
 )
 
 export default function LandingPage() {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [isVisible, setIsVisible] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -122,7 +138,6 @@ export default function LandingPage() {
 
   return (
     <div className="bg-[#1a1d21] min-h-screen text-[#e0e0e0] font-sans">
-     
       <header className="bg-[#24272c] shadow-sm sticky top-0 z-50">
         <nav className="container mx-auto px-6 py-4">
           <div className="flex justify-between items-center">
@@ -131,20 +146,33 @@ export default function LandingPage() {
               <span className="ml-2 text-2xl font-bold text-[#e0e0e0]" style={{ fontFamily: '__DM_Sans_0dfae3, __DM_Sans_Fallback_0dfae3, sans-serif' }}>JournalApp</span>
             </div>
             <div className="hidden md:flex items-center space-x-6">
-             
-              <Link href='/auth/signin'><Button className="bg-[#8dc572] text-[#1a1d21] hover:bg-[#7ab562] transition-colors duration-300">
-                Sign In
-              </Button></Link>
+              <a href="#features" className="text-[#9a9897] hover:text-[#e0e0e0] transition-colors duration-300">Features</a>
+              <a href="#benefits" className="text-[#9a9897] hover:text-[#e0e0e0] transition-colors duration-300">Benefits</a>
+              <a href="#testimonials" className="text-[#9a9897] hover:text-[#e0e0e0] transition-colors duration-300">Testimonials</a>
+              <Link href='/auth/signin'>
+                <Button className="bg-[#8dc572] text-[#1a1d21] hover:bg-[#7ab562] transition-colors duration-300">
+                  Sign In
+                </Button>
+              </Link>
             </div>
             <div className="md:hidden">
-            
+            <Link href='/auth/signin'>
+                <Button className="bg-[#8dc572] text-[#1a1d21] hover:bg-[#7ab562] transition-colors duration-300">
+                  Sign In
+                </Button>
+              </Link>
             </div>
           </div>
+      
         </nav>
       </header>
 
-
-      <section className="py-20 bg-gradient-to-r from-[#24272c] to-[#1a1d21]">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="py-20 bg-gradient-to-r from-[#24272c] to-[#1a1d21]"
+      >
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-10 md:mb-0">
@@ -169,9 +197,8 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-   
       <section id="features" className="py-20 bg-[#1a1d21]">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-center text-[#e0e0e0] mb-12">
@@ -358,7 +385,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="bg-gradient-to-r from-[#24272c] to-[#1a1d21] py-20">
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-gradient-to-r from-[#24272c] to-[#1a1d21] py-20"
+      >
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-[#e0e0e0] mb-8">
             Ready to Start Your Journaling Journey?
@@ -370,7 +402,7 @@ export default function LandingPage() {
             Get Started for Free <ChevronRight className="ml-2" />
           </Button>
         </div>
-      </section>
+      </motion.section>
 
       <footer className="bg-[#24272c] text-[#e0e0e0] py-12">
         <div className="container mx-auto px-6">
@@ -416,16 +448,7 @@ export default function LandingPage() {
         </div>
       </footer>
 
-  
-      {isVisible && (
-        <Button
-          onClick={scrollToTop}
-          className="fixed bottom-8 right-8 bg-[#8dc572] text-[#1a1d21] p-3 rounded-full shadow-lg hover:bg-[#7ab562] transition-colors duration-300"
-          aria-label="Back to top"
-        >
-          <ChevronUp className="h-6 w-6" />
-        </Button>
-      )}
+    
     </div>
   )
 }
