@@ -1,4 +1,5 @@
 'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -15,11 +16,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
 import { UserAvatar } from '@/components/UserAvatar'
 
 const navigationItems = [
@@ -40,11 +36,11 @@ export default function DashboardLayout({
   const pathname = usePathname()
 
   return (
-    <div className="flex h-screen bg-[#FFFFFF]">
+    <div className="flex h-screen bg-[#FAFAFA]">
       {/* Desktop Sidebar */}
-      <aside className="hidden md:block w-64 bg-[#FFFFFF] border-r border-[#E5E5E5]">
-        <div className="p-4 border-b border-[#E5E5E5]">
-          <h1 className="text-xl font-semibold text-[#000000]">JournalApp</h1>
+      <aside className="hidden md:block w-64 bg-white border-r border-[#DBDBDB]">
+        <div className="p-4 border-b border-[#DBDBDB]">
+          <h1 className="text-2xl font-bold text-[#FFD1DC]" style={{ fontFamily: 'Agatha, sans-serif' }}>JournalApp</h1>
         </div>
         <nav className="mt-6">
           {navigationItems.map((item) => (
@@ -52,60 +48,55 @@ export default function DashboardLayout({
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center px-4 py-2 text-[#37352F] hover:bg-[#F7F7F7] transition-colors duration-200 rounded-sm mx-2",
-                pathname === item.href && "bg-[#F7F7F7] font-medium"
+                "flex items-center px-4 py-2 text-[#262626] hover:bg-[#FAFAFA] hover:text-[#BFEAF5] transition-colors duration-200 rounded-sm mx-2",
+                pathname === item.href && "bg-[#FAFAFA] text-[#BFEAF5] font-medium"
               )}
             >
-              <item.icon className="w-4 h-4 mr-3 text-[#737373]" />
+              <item.icon className="w-5 h-5 mr-3" />
               <span className="text-sm">{item.label}</span>
             </Link>
           ))}
         </nav>
       </aside>
 
-      <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
+      <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-[#FFFFFF] border-b border-[#E5E5E5] sticky top-0 z-10">
-          <div className="max-w-7xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <header className="bg-white border-b border-[#DBDBDB] sticky top-0 z-10">
+          <div className="max-w-5xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             {/* Mobile Logo - only visible on mobile */}
-            <h1 className="md:hidden text-lg font-semibold text-[#000000]">JournalApp</h1>
+            <h1 className="md:hidden text-2xl font-bold text-[#FFD1DC]" style={{ fontFamily: 'Agatha, sans-serif' }}>JournalApp</h1>
             
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" className="hover:bg-[#F7F7F7]">
-                    <Bell className="h-4 w-4 text-[#737373]" />
+                  <Button variant="ghost" size="icon" className="hover:bg-[#FAFAFA]">
+                    <Bell className="h-5 w-5 text-[#262626]" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel className="text-[#37352F]">Notifications</DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[#E5E5E5]" />
+                <DropdownMenuContent align="end" className="w-56 bg-white border border-[#DBDBDB]">
+                  <DropdownMenuLabel className="text-[#262626]">Notifications</DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-[#DBDBDB]" />
                   <DropdownMenuItem className="text-sm">New journal entry reminder</DropdownMenuItem>
                   <DropdownMenuItem className="text-sm">Weekly reflection</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-[#F7F7F7]">
-                    <Avatar className="h-7 w-7">
-                      <UserAvatar
-                        user={{ name: session?.user?.name || null, image: session?.user?.name?.[0] || null }}
-                        className="h-7 w-7"
-                      />
-                      <AvatarFallback className="text-sm bg-[#F7F7F7] text-[#37352F]">
-                        {session?.user?.name?.[0]}
-                      </AvatarFallback>
-                    </Avatar>
+                  <Button variant="ghost" className="relative h-8 w-8 rounded-full hover:bg-[#FAFAFA]">
+                    <UserAvatar
+                      user={{ name: session?.user?.name || null, image: session?.user?.image || null }}
+                      className="h-8 w-8"
+                    />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuContent className="w-56 bg-white border border-[#DBDBDB]" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium text-[#37352F]">{session?.user?.name}</p>
-                      <p className="text-xs text-[#737373]">{session?.user?.email}</p>
+                      <p className="text-sm font-medium text-[#262626]">{session?.user?.name}</p>
+                      <p className="text-xs text-[#8E8E8E]">{session?.user?.email}</p>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator className="bg-[#E5E5E5]" />
+                  <DropdownMenuSeparator className="bg-[#DBDBDB]" />
                   <DropdownMenuItem className="text-sm">
                     <User className="mr-2 h-4 w-4" />
                     <span>Profile</span>
@@ -114,7 +105,7 @@ export default function DashboardLayout({
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator className="bg-[#E5E5E5]" />
+                  <DropdownMenuSeparator className="bg-[#DBDBDB]" />
                   <DropdownMenuItem onClick={() => signOut()} className="text-sm">
                     <LogOut className="mr-2 h-4 w-4" />
                     <span>Log out</span>
@@ -126,12 +117,14 @@ export default function DashboardLayout({
         </header>
 
         {/* Page content */}
-        <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          {children}
+        <div className="flex-1 overflow-y-auto">
+          <div className="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            {children}
+          </div>
         </div>
 
         {/* Mobile Navigation */}
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#FFFFFF] border-t border-[#E5E5E5]">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#DBDBDB]">
           <div className="grid grid-cols-5 h-14">
             {navigationItems.slice(0, 5).map((item) => (
               <Link
@@ -140,11 +133,11 @@ export default function DashboardLayout({
                 className={cn(
                   "flex flex-col items-center justify-center space-y-1",
                   pathname === item.href 
-                    ? "text-[#000000]" 
-                    : "text-[#737373] hover:text-[#000000]"
+                    ? "text-[#BFEAF5]" 
+                    : "text-[#262626] hover:text-[#BFEAF5]"
                 )}
               >
-                <item.icon className="w-5 h-5" />
+                <item.icon className="w-6 h-6" />
                 <span className="text-[10px]">{item.label}</span>
               </Link>
             ))}
