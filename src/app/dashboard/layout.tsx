@@ -37,7 +37,7 @@ export default function DashboardLayout({
 
   return (
     <div className="flex h-screen bg-[#FAFAFA]">
-      {/* Desktop Sidebar */}
+   
       <aside className="hidden md:block w-64 bg-white border-r border-[#DBDBDB]">
         <div className="p-4 border-b border-[#DBDBDB]">
         <div className='flex'>
