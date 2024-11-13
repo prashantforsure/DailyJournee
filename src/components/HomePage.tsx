@@ -31,6 +31,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import Link from 'next/link'
+
 //@ts-expect-error there is some type error
 const FeatureCard = ({ icon, title, description }) => (
   <motion.div
@@ -139,16 +140,14 @@ export default function LandingPage() {
   return (
     <div className="bg-[#1a1d21] min-h-screen text-[#e0e0e0] font-sans">
       <header className="bg-[#24272c] shadow-sm sticky top-0 z-50">
-        <nav className="container mx-auto px-6 py-4">
+        <nav className="container mx-auto px-4 sm:px-6 py-4">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <Feather className="h-8 w-8 text-[#8dc572]" />
-              <span className="ml-2 text-2xl font-bold text-[#e0e0e0]" style={{ fontFamily: '__DM_Sans_0dfae3, __DM_Sans_Fallback_0dfae3, sans-serif' }}>JournalApp</span>
+              <span className="ml-2 text-xl font-bold text-[#e0e0e0]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span>
             </div>
             <div className="hidden md:flex items-center space-x-6">
-              <a href="#features" className="text-[#9a9897] hover:text-[#e0e0e0] transition-colors duration-300">Features</a>
-              <a href="#benefits" className="text-[#9a9897] hover:text-[#e0e0e0] transition-colors duration-300">Benefits</a>
-              <a href="#testimonials" className="text-[#9a9897] hover:text-[#e0e0e0] transition-colors duration-300">Testimonials</a>
+          
               <Link href='/auth/signin'>
                 <Button className="bg-[#8dc572] text-[#1a1d21] hover:bg-[#7ab562] transition-colors duration-300">
                   Sign In
@@ -173,7 +172,7 @@ export default function LandingPage() {
         transition={{ duration: 0.5 }}
         className="py-20 bg-gradient-to-r from-[#24272c] to-[#1a1d21]"
       >
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-10 md:mb-0">
               <h1 className="text-4xl md:text-5xl font-bold text-[#e0e0e0] mb-6">
@@ -200,7 +199,7 @@ export default function LandingPage() {
       </motion.section>
 
       <section id="features" className="py-20 bg-[#1a1d21]">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-3xl font-bold text-center text-[#e0e0e0] mb-12">
             Powerful Features to Enhance Your Journaling Experience
           </h2>
@@ -240,7 +239,7 @@ export default function LandingPage() {
       </section>
 
       <section id="benefits" className="bg-[#24272c] py-20">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-3xl font-bold text-center text-[#e0e0e0] mb-12">
             Transform Your Life Through Journaling
           </h2>
@@ -270,7 +269,7 @@ export default function LandingPage() {
       </section>
 
       <section className="py-20 bg-gradient-to-r from-[#1a1d21] to-[#24272c]">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto px-4 sm:px-6">
           <h2 className="text-3xl font-bold text-center text-[#e0e0e0] mb-12">
             Experience JournalApp in Action
           </h2>
@@ -302,6 +301,7 @@ export default function LandingPage() {
                     />
                   </div>
                 </CardContent>
+                
                 <CardFooter className="flex justify-between">
                   <Button variant="outline" className="border-[#3a3f4b] text-[#9a9897] hover:bg-[#3a3f4b] hover:text-[#e0e0e0]">Save Draft</Button>
                   <Button className="bg-[#8dc572] text-[#1a1d21] hover:bg-[#7ab562]">Publish Entry</Button>
@@ -443,7 +443,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="mt-8 pt-8 border-t border-[#3a3f4b] text-center">
-            <p className="text-[#9a9897]">&copy; 2024 JournalApp. All rights reserved.</p>
+            <p className="text-[#9a9897]">&copy; 2024 Daily Journee. All rights reserved.</p>
           </div>
         </div>
       </footer>

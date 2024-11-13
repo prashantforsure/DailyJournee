@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from "next-auth/react"
-import { Bell, Book, Calendar, Home, LogOut, Search, Settings, Star, User } from 'lucide-react'
+import { Bell, Book, Calendar, Feather, Home, LogOut, Search, Settings, Star, User } from 'lucide-react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -40,7 +40,10 @@ export default function DashboardLayout({
       {/* Desktop Sidebar */}
       <aside className="hidden md:block w-64 bg-white border-r border-[#DBDBDB]">
         <div className="p-4 border-b border-[#DBDBDB]">
-          <h1 className="text-2xl font-bold text-[#FFD1DC]" style={{ fontFamily: 'Agatha, sans-serif' }}>JournalApp</h1>
+        <div className='flex'>
+        <Feather className="h-8 w-8 text-[#8dc572]" />
+        <span className="ml-2 text-xl font-bold text-[#080707]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span>
+        </div>
         </div>
         <nav className="mt-6">
           {navigationItems.map((item) => (
@@ -63,14 +66,15 @@ export default function DashboardLayout({
         {/* Header */}
         <header className="bg-white border-b border-[#DBDBDB] sticky top-0 z-10">
           <div className="max-w-5xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            {/* Mobile Logo - only visible on mobile */}
-            <h1 className="md:hidden text-2xl font-bold text-[#FFD1DC]" style={{ fontFamily: 'Agatha, sans-serif' }}>JournalApp</h1>
             
+          <div className='flex md:hidden'><Feather className="h-8 w-8 text-[#8dc572]" />
+          <span className="ml-2 text-xl font-bold text-[#e0e0e0]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span></div>
+          <span className='text-white'>.</span>
             <div className="flex items-center space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="hover:bg-[#FAFAFA]">
-                    <Bell className="h-5 w-5 text-[#262626]" />
+                 
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56 bg-white border border-[#DBDBDB]">
@@ -97,10 +101,7 @@ export default function DashboardLayout({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-[#DBDBDB]" />
-                  <DropdownMenuItem className="text-sm">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </DropdownMenuItem>
+              
                   <DropdownMenuItem className="text-sm">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
