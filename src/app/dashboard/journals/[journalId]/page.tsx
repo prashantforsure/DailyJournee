@@ -4,9 +4,14 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { Edit, Star, Trash2, PlusCircle, BarChart2, FileText, Heart, MoreVertical, Loader2 } from 'lucide-react'
+import { Edit, Star, Trash2, PlusCircle, BarChart2, FileText, Heart, MoreVertical, Loader2, Clock, Plus } from 'lucide-react'
 import { toast } from 'react-hot-toast'
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -312,6 +317,22 @@ export default function JournalDetailsPage() {
           </form>
         </DialogContent>
       </Dialog>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              className="fixed bottom-8 right-8 mb-8 rounded-full w-12 h-12 bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
+            >
+              <Plus className="h-6 w-6" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>create enrty</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   )
 }
