@@ -143,8 +143,8 @@ export default function MemoriesPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      <h1 className="text-4xl font-bold mb-8 text-gray-800">Your Memory Lane</h1>
+    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Memory Lane</h1>
 
       <div className="flex justify-between items-center mb-6">
         <Button 
@@ -154,7 +154,7 @@ export default function MemoriesPage() {
           <ChevronLeft className="mr-2 h-4 w-4" />
           Previous
         </Button>
-        <h2 className="text-2xl font-semibold text-gray-700">{selectedYear} Memories</h2>
+        <h2 className="text-xl font-semibold text-center text-gray-700">{selectedYear} Memories</h2>
         <Button 
           onClick={() => handleYearChange(1)}
           className="bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
@@ -348,7 +348,7 @@ export default function MemoriesPage() {
           <TooltipTrigger asChild>
             <Button
               variant="outline"
-              className="fixed bottom-8 right-8 rounded-full w-12 h-12 bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
+              className="fixed bottom-8 right-8 mb-8 rounded-full w-12 h-12 bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
             >
               <Clock className="h-6 w-6" />
             </Button>
