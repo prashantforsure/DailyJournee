@@ -235,19 +235,19 @@ const UserTestimonials = () => {
 
   const testimonials = [
     {
-      name: 'Sarah Johnson',
+      name: 'adarsh',
       role: 'Entrepreneur',
       content: 'This journaling app has been a game-changer for my personal growth. The AI insights have helped me uncover patterns I never noticed before.',
       avatar: '/placeholder.svg'
     },
     {
-      name: 'Michael Chen',
+      name: 'drishtant',
       role: 'Student',
       content: 'As a busy student, I love how quick and easy it is to jot down my thoughts. The cross-device sync is perfect for my lifestyle.',
       avatar: '/placeholder.svg'
     },
     {
-      name: 'Emily Rodriguez',
+      name: 'shubh',
       role: 'Therapist',
       content: 'I recommend this app to all my clients. Its an incredible tool for self-reflection and emotional awareness.',
       avatar: '/placeholder.svg'
