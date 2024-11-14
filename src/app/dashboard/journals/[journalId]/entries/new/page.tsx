@@ -269,7 +269,7 @@ export default function NewEntryPage() {
               </Button>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between bg-[#BFEAF5]">
+          <CardFooter className="flex justify-between ">
             <Button 
               type="button" 
               variant="outline" 

@@ -33,6 +33,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Link from 'next/link'
 
 interface Entry {
   id: string
@@ -321,9 +322,11 @@ export default function JournalDetailsPage() {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
+           
             <Button
               variant="outline"
-              className="fixed bottom-8 right-8 mb-8 rounded-full w-12 h-12 bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
+              className="fixed bottom-16 right-8 mb-12 rounded-full w-12 h-12 bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
+              onClick={() => router.push(`/dashboard/journals/${params.journalId}/entries/new`)}
             >
               <Plus className="h-6 w-6" />
             </Button>
