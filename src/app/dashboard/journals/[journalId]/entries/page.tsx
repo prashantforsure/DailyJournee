@@ -4,8 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { useSession } from 'next-auth/react'
-import { Search, Plus, Trash2, Edit3, Loader2, X } from 'lucide-react'
+
+import { Search, Plus, Trash2, Edit3, Loader2 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 import { Button } from "@/components/ui/button"
@@ -51,7 +51,7 @@ const moodColors = {
 export default function EntryManagementPage() {
   const params = useParams()
   const router = useRouter()
-  const { data: session } = useSession()
+
   const [entries, setEntries] = useState<Entry[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')

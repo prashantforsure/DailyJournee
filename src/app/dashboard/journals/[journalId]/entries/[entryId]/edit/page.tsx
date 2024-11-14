@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useSession } from 'next-auth/react';
+
 import { Editor } from '@tinymce/tinymce-react';
 import { 
   Save, 
@@ -40,7 +40,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+
 } from "@/components/ui/dialog";
 
 const entrySchema = z.object({
@@ -73,7 +73,7 @@ const moodOptions = [
 export default function EditEntryPage() {
   const params = useParams();
   const router = useRouter();
-  const { data: session } = useSession();
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [isLoading, setIsLoading] = useState(true);

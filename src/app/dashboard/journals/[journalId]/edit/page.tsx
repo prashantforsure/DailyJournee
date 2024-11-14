@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Book, Loader2, Save, Trash2, ArrowRight } from 'lucide-react';
+import { Book, Loader2, Save, ArrowRight } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 import { Button } from "@/components/ui/button";
@@ -31,7 +31,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+ 
 } from "@/components/ui/dialog";
 import {  Pen, Notebook, Calendar, Star } from "lucide-react";
 

@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from "next-auth/react"
-import { Bell, Book, Calendar, Feather, Home, LogOut, Search, Settings, Star, User } from 'lucide-react'
+import {  Book, Calendar, Feather, Home, LogOut, Search, Settings, Star } from 'lucide-react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"

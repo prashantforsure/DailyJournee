@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { useSession } from 'next-auth/react'
+
 import { 
   Calendar,
   Clock,
@@ -13,14 +13,14 @@ import {
   Share2,
   Tag,
   Folder,
-  Image as ImageIcon,
+
   ArrowLeft,
   Loader2,
 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import {
   Dialog,
@@ -29,7 +29,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+
 } from "@/components/ui/dialog"
 import {
   Tooltip,
@@ -70,7 +70,7 @@ const moodColors = {
 export default function EntryDetailsPage() {
   const params = useParams()
   const router = useRouter()
-  const { data: session } = useSession()
+
   const [entry, setEntry] = useState<Entry | null>(null)
   const [relatedEntries, setRelatedEntries] = useState<RelatedEntry[]>([])
   const [isLoading, setIsLoading] = useState(true)

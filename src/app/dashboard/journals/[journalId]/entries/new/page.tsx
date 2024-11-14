@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { useSession } from 'next-auth/react'
+
 import { 
   Save, 
   Loader2, 
@@ -67,13 +67,13 @@ const moodOptions = [
 export default function NewEntryPage() {
   const params = useParams()
   const router = useRouter()
-  const { data: session } = useSession()
+  
   const [categories, setCategories] = useState<Category[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isMediaDialogOpen, setIsMediaDialogOpen] = useState(false)
   const [mediaUrl, setMediaUrl] = useState('')
   const [isGenerating, setIsGenerating] = useState(false)
-  const editorRef = useRef<any>(null)
+
   const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<EntryFormData>({
     resolver: zodResolver(entrySchema),
     defaultValues: {
@@ -123,7 +123,7 @@ export default function NewEntryPage() {
     setValue('mediaUrls', watchedMediaUrls?.filter(url => url !== urlToRemove) || [])
   }
 
-  const content = watch('content')
+
 
   const handleGenerateContent = async () => {
     setIsGenerating(true);

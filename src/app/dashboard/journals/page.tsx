@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { Book, ChevronDown, Filter, Search, SortAsc, SortDesc, Loader2, Plus } from 'lucide-react'
+import { Filter, Search, SortAsc, SortDesc, Loader2, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { Button } from "@/components/ui/button"

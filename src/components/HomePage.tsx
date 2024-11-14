@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useSession } from 'next-auth/react'
+
 import { 
   ChevronRight, 
   Feather, 
@@ -18,17 +18,17 @@ import {
   Clock,
   Lock,
   TrendingUp,
-  ChevronUp,
+ 
   Github,
   Twitter,
   Linkedin,
-  Menu
+
 } from 'lucide-react'
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Input } from "@/components/ui/input"
+
 import { Textarea } from "@/components/ui/textarea"
 import Link from 'next/link'
 
@@ -96,9 +96,9 @@ const TestimonialCard = ({ name, image, quote }) => (
 
 export default function LandingPage() {
   const router = useRouter()
-  const { data: session, status } = useSession()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isVisible, setIsVisible] = useState(false)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -108,6 +108,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     const toggleVisibility = () => {
+      
       if (window.pageYOffset > 300) {
         setIsVisible(true)
       } else {
@@ -120,12 +121,7 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', toggleVisibility)
   }, [])
 
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    })
-  }
+
 
   if (status === 'loading') {
     return <div className="flex justify-center items-center h-screen bg-[#1a1d21]">

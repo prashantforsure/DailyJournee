@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:strict": "eslint --max-warnings=0 src/",
+  "lint:fix": "eslint src/ --fix",
+  "lint:types": "tsc --noEmit",
+  "lint:all": "npm run lint:strict && npm run lint:types"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.3",
@@ -68,10 +72,10 @@
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18",
     "@types/react-draft-wysiwyg": "^1.13.8",
-    "eslint": "^8",
-    "eslint-config-next": "15.0.3",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.0.3",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5.6.3"
   }
 }

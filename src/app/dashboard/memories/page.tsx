@@ -3,11 +3,10 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { format, subYears, startOfYear, endOfYear } from 'date-fns'
+import { format } from 'date-fns'
 import { 
-  Calendar, 
+  
   Clock, 
-  Star, 
   ChevronLeft, 
   ChevronRight, 
   Loader2,

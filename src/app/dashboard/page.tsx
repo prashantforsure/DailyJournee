@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Book, Edit3, TrendingUp, Loader2 } from 'lucide-react'
+import { Book, Edit3, TrendingUp } from 'lucide-react'
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
@@ -10,13 +10,17 @@ import { Skeleton } from "@/components/ui/skeleton"
 import JournalList from '@/components/JournalList'
 import RecentEntriesList from '@/components/entries/recent-entries-list'
 
+
 interface DashboardData {
   totalJournals: number
   totalEntries: number
   currentStreak: number
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentJournals: any[]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentEntries: any[]
 }
+
 
 async function getDashboardData(): Promise<DashboardData> {
   try {
@@ -79,6 +83,7 @@ export default function DashboardPage() {
           <JournalList journals={dashboardData.recentJournals} />
         </RecentCard>
         <RecentCard title="Recent Entries">
+   
           <RecentEntriesList entries={dashboardData.recentEntries} />
         </RecentCard>
       </div>

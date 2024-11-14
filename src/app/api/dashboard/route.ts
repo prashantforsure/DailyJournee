@@ -68,7 +68,7 @@ async function calculateStreak(userId: string): Promise<number> {
   })
 
   let streak = 0
-  let currentDate = today
+  const currentDate = today
 
   for (const entry of entries) {
     const entryDate = new Date(entry.createdAt)

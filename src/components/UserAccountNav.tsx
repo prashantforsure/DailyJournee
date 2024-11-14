@@ -4,7 +4,7 @@ import { User } from 'next-auth'
 import { signOut } from 'next-auth/react'
 import { DropdownMenuContent, DropdownMenu, DropdownMenuTrigger, DropdownMenuSeparator, DropdownMenuItem } from './ui/dropdown-menu'
 import Link from 'next/link'
-import { LogOut, Rss, PlusCircle, CircleUser, ListTodo } from 'lucide-react'
+import { LogOut, Rss,  CircleUser, ListTodo } from 'lucide-react'
 
 import { motion } from 'framer-motion'
 import { UserAvatar } from './UserAvatar'

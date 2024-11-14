@@ -88,14 +88,14 @@ export default function FavoritesPage() {
     }
   }
 
-  const handleSort = (column: string) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
-    } else {
-      setSortBy(column)
-      setSortOrder('asc')
-    }
-  }
+  // const handleSort = (column: string) => {
+  //   if (sortBy === column) {
+  //     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+  //   } else {
+  //     setSortBy(column)
+  //     setSortOrder('asc')
+  //   }
+  // }
 
   const handleRemoveFavorite = async (entryId: string, journalId: string) => {
     try {

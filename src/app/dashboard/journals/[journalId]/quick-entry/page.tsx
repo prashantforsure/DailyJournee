@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useSession } from 'next-auth/react';
+
 import { Editor } from '@tinymce/tinymce-react';
 import { 
   Save, 
@@ -54,11 +54,11 @@ const moodOptions = [
 export default function QuickEntryPage() {
   const params = useParams();
   const router = useRouter();
-  const { data: session } = useSession();
+ 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [useRichText, setUseRichText] = useState(false);
 
-  const { register, handleSubmit, control, setValue, watch, formState: { errors } } = useForm<QuickEntryFormData>({
+  const { register, handleSubmit, control, setValue,  formState: { errors } } = useForm<QuickEntryFormData>({
     resolver: zodResolver(quickEntrySchema),
     defaultValues: {
       content: '',

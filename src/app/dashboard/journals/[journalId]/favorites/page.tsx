@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { Star, ChevronDown, ChevronUp, Loader2, Search, X, Eye, ArrowUpDown } from 'lucide-react'
+import { Star, ChevronDown, ChevronUp, Loader2, Search,  Eye} from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 import { Button } from "@/components/ui/button"
@@ -88,14 +88,14 @@ export default function FavoritesPage() {
     }
   }
 
-  const handleSort = (column: string) => {
-    if (sortBy === column) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
-    } else {
-      setSortBy(column)
-      setSortOrder('asc')
-    }
-  }
+  // const handleSort = (column: string) => {
+  //   if (sortBy === column) {
+  //     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+  //   } else {
+  //     setSortBy(column)
+  //     setSortOrder('asc')
+  //   }
+  // }
 
   const handleRemoveFavorite = async (entryId: string) => {
     try {

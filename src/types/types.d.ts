@@ -1,5 +1,5 @@
 declare module 'novel' {
-    import { FC, ComponentProps } from 'react';
+    import { FC } from 'react';
     import { Editor as CoreEditor } from '@tiptap/core';
   
     interface EditorProps {

@@ -53,8 +53,8 @@ export const authOptions: AuthOptions = {
       }
       return session;
     },
-    redirect({ url, baseUrl }) {
-      // Fix: Use template literal syntax correctly
+    redirect({ baseUrl }) {
+
       return `${baseUrl}/dashboard`;
     },
   },
