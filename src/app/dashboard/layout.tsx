@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut, useSession } from "next-auth/react"
@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from '@/components/UserAvatar'
-
+import { useRouter } from 'next/navigation'
 const navigationItems = [
   { icon: Home, label: 'Overview', href: '/dashboard' },
   { icon: Book, label: 'Journals', href: '/dashboard/journals' },
@@ -34,6 +34,12 @@ export default function DashboardLayout({
 }) {
   const { data: session } = useSession()
   const pathname = usePathname()
+  const router = useRouter()
+  useEffect(() => {
+    if (!session) {
+      router.push('/')
+    }
+  }, [session, router])
 
   return (
     <div className="flex h-screen bg-[#FAFAFA]">
