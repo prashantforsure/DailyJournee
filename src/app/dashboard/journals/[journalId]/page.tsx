@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { Edit, Star, Trash2, PlusCircle, BarChart2, FileText, Heart, MoreVertical } from 'lucide-react'
+import { Edit, Star, Trash2, PlusCircle, BarChart2, FileText, Heart, MoreVertical, Loader2 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 import { Button } from "@/components/ui/button"
@@ -121,7 +121,9 @@ export default function JournalDetailsPage() {
   }
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>
+    return  <div className="flex justify-center items-center h-64">
+    <Loader2 className="h-8 w-8 animate-spin text-[#BFEAF5]" />
+  </div>
   }
 
   if (!journal) {

@@ -29,20 +29,30 @@ const categorySchema = z.object({
         return new NextResponse("Unauthorized", { status: 401 });
       }
       const journalId = (await params).journalId
+
+      if (!journalId) {
+        console.error('Bad Request: Missing journalId');
+        return new NextResponse("Bad Request: Missing journalId", { status: 400 });
+      }
+  
       const categories = await prisma.category.findMany({
         where: {
           userId: session.user.id,
-          entries: {
-            some: {
-              journalId
+        },
+        select: {
+          id: true,
+          name: true,
+          color: true,
+          _count: {
+            select: {
+              entries: {
+                where: {
+                  journalId: journalId
+                }
+              }
             }
           }
-        },
-        include: {
-          _count: {
-            select: { entries: true },
-          },
-        },
+        }
       });
   
       return NextResponse.json(categories);
