@@ -3,13 +3,13 @@ import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth/auth'
 
-export async function POST(req: Request, { params }: { params: { id: string } }) {
+export async function POST(req: Request,  { params }: { params: Promise<{ id: string }> }) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { id } = params
+  const id = (await params).id
 
   try {
     const timeCapsule = await prisma.timeCapsule.findUnique({

@@ -5,7 +5,8 @@ import { authOptions } from '@/lib/auth/auth';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { journalId: string; entryId: string } }
+  
+  { params }: { params: Promise<{ journalId: string; entryId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -13,7 +14,8 @@ export async function GET(
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { journalId, entryId } = params;
+  const  entryId  = (await params).entryId
+  const journalId = (await params).journalId
 
   try {
     
@@ -72,15 +74,15 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { journalId: string; entryId: string } }
+  { params }: { params: Promise<{ journalId: string; entryId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
-
-  const { journalId, entryId } = params;
+  const  entryId  = (await params).entryId
+  const journalId = (await params).journalId
 
   try {
     const body = await req.json();
@@ -118,7 +120,7 @@ export async function PUT(
 
 export async function DELETE(
     req: NextRequest,
-    { params }: { params: { journalId: string; entryId: string } }
+    { params }: { params: Promise<{ journalId: string; entryId: string }> }
   ) {
     const session = await getServerSession(authOptions);
   
@@ -126,7 +128,8 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
   
-    const { journalId, entryId } = params;
+    const  entryId  = (await params).entryId
+    const journalId = (await params).journalId
   
     try {
       await prisma.entry.delete({

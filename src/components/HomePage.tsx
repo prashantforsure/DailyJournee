@@ -22,6 +22,7 @@ import {
   Github,
   Twitter,
   Linkedin,
+  Loader2,
 
 } from 'lucide-react'
 
@@ -31,8 +32,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { Textarea } from "@/components/ui/textarea"
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
 
-//@ts-expect-error there is some type error
 const FeatureCard = ({ icon, title, description }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
@@ -51,7 +52,7 @@ const FeatureCard = ({ icon, title, description }) => (
     </Card>
   </motion.div>
 )
-//@ts-expect-error there is some type error
+
 const BenefitItem = ({ icon, title, description }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -68,7 +69,7 @@ const BenefitItem = ({ icon, title, description }) => (
     </div>
   </motion.div>
 )
-//@ts-expect-error there is some type error
+
 const TestimonialCard = ({ name, image, quote }) => (
   <motion.div
     whileHover={{ scale: 1.05 }}
@@ -96,42 +97,43 @@ const TestimonialCard = ({ name, image, quote }) => (
 
 export default function LandingPage() {
   const router = useRouter()
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [isVisible, setIsVisible] = useState(false)
+const { data: session, status } = useSession()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [isVisible, setIsVisible] = useState(false)
 
+useEffect(() => {
+  if (status === 'authenticated') {
+    router.push('/dashboard')
+  }
+}, [status, router])
 
-  useEffect(() => {
-    if (status === 'authenticated') {
-      router.push('/dashboard')
+useEffect(() => {
+  const toggleVisibility = () => {
+    if (typeof window !== 'undefined') {
+      setIsVisible(window.pageYOffset > 300)
     }
-  }, [status, router])
+  }
 
-  useEffect(() => {
-    const toggleVisibility = () => {
-      
-      if (window.pageYOffset > 300) {
-        setIsVisible(true)
-      } else {
-        setIsVisible(false)
-      }
-    }
-
+  if (typeof window !== 'undefined') {
     window.addEventListener('scroll', toggleVisibility)
 
     return () => window.removeEventListener('scroll', toggleVisibility)
-  }, [])
+  }
+}, [])
 
-
-
-  if (status === 'loading') {
-    return <div className="flex justify-center items-center h-screen bg-[#1a1d21]">
-      <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-[#8dc572]"></div>
+if (status === 'loading') {
+  return (
+    <div className="flex justify-center items-center h-screen bg-[#1a1d21]">
+      <Loader2 className="h-32 w-32 animate-spin text-[#8dc572]" />
     </div>
-  }
+  )
+}
 
-  if (status === 'authenticated') {
-    return null 
-  }
+if (status === 'authenticated') {
+  return null
+}
 
   return (
     <div className="bg-[#1a1d21] min-h-screen text-[#e0e0e0] font-sans">

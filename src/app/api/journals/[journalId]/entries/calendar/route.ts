@@ -5,7 +5,8 @@ import { authOptions } from '@/lib/auth/auth';
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
+
 ) {
   const session = await getServerSession(authOptions);
 
@@ -13,7 +14,7 @@ export async function GET(
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { journalId } = params;
+const journalId = (await params).journalId
   const { searchParams } = new URL(req.url);
   const year = searchParams.get('year');
   const month = searchParams.get('month');

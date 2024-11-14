@@ -15,6 +15,7 @@ import { authOptions } from '@/lib/auth/auth';
 //   isFavorite: z.boolean().default(false),
 // });
 
+
 const entrySchema = z.object({
   title: z.string().min(1, "Title is required").max(255, "Title must be 255 characters or less"),
   content: z.string().min(1, "Content is required"),
@@ -31,9 +32,10 @@ const entrySchema = z.object({
   ).optional(),
 });
 
+
 export async function POST(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -41,7 +43,7 @@ export async function POST(
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { journalId } = params;
+  const journalId = (await params).journalId
 
   try {
     const journal = await prisma.journal.findUnique({
@@ -63,10 +65,17 @@ export async function POST(
         title: validatedData.title,
         content: validatedData.content,
         mood: validatedData.mood,
-        journalId: journalId,
         isQuickEntry: validatedData.isQuickEntry,
         isFavorite: validatedData.isFavorite,
-        categoryId: validatedData.categoryId,
+        journal: {
+          connect: { id: journalId }
+        },
+        user: {
+          connect: { id: session.user.id }
+        },
+        category: validatedData.categoryId 
+          ? { connect: { id: validatedData.categoryId } }
+          : undefined,
         tags: validatedData.tagIds?.length 
           ? {
               connect: validatedData.tagIds.map(id => ({ id })),
@@ -88,6 +97,7 @@ export async function POST(
       },
     });
 
+
     return NextResponse.json(newEntry, { status: 201 });
   } catch (error) {
     if (error instanceof z.ZodError) {
@@ -106,15 +116,14 @@ type SortOrder = typeof validSortOrders[number];
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
-
-  const { journalId } = params;
+const journalId = (await params).journalId
   const { searchParams } = new URL(req.url);
   
   const page = parseInt(searchParams.get('page') || '1');
@@ -204,7 +213,7 @@ export async function GET(
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -212,7 +221,7 @@ export async function DELETE(
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { journalId } = params;
+  const journalId = (await params).journalId
   const { searchParams } = new URL(req.url);
   const entryIds = searchParams.get('ids')?.split(',') || [];
 

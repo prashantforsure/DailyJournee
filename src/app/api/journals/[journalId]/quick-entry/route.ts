@@ -13,7 +13,7 @@ const quickEntrySchema = z.object({
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -21,7 +21,7 @@ export async function POST(
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { journalId } = params;
+  const journalId = (await params).journalId
 
   try {
 
@@ -48,6 +48,9 @@ export async function POST(
         isFavorite: validatedData.isFavorite ?? false,
         journal: {
           connect: { id: journalId }
+        },
+        user: {
+          connect: { id: session.user.id }
         }
       },
     });

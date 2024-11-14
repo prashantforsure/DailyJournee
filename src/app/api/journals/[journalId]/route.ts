@@ -7,15 +7,14 @@ import { z } from 'zod';
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
-
-  const { journalId } = params;
+const journalId = (await params).journalId
 
   try {
   
@@ -47,11 +46,11 @@ export async function DELETE(
 
 export async function GET(
   req: NextRequest,
-  context: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   try {
     
-    const journalId = context.params.journalId;
+    const journalId = (await params).journalId;
     
     const session = await getServerSession(authOptions);
 
@@ -153,7 +152,7 @@ const journalSchema = z.object({
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
@@ -161,7 +160,7 @@ export async function PUT(
     return new NextResponse("Unauthorized", { status: 401 });
   }
 
-  const { journalId } = params;
+  const journalId = (await params).journalId
 
   try {
     const body = await req.json();
@@ -187,15 +186,14 @@ export async function PUT(
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { journalId: string } }
+  { params }: { params: Promise<{ journalId: string }> }
 ) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
-
-  const { journalId } = params;
+const journalId = (await params).journalId
   const { targetJournalId } = await req.json();
 
   if (!targetJournalId) {

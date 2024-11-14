@@ -27,8 +27,12 @@ export async function POST(req: NextRequest) {
 
     const newJournal = await prisma.journal.create({
       data: {
-        ...validatedData,
-        userId: session.user.id,
+        name: validatedData.name, 
+        description: validatedData.description,
+        color: validatedData.color,
+        icon: validatedData.icon,
+        
+        userId: session.user.id, 
       },
     });
 
