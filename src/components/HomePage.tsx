@@ -125,8 +125,8 @@ useEffect(() => {
 
 if (status === 'loading') {
   return (
-    <div className="flex justify-center items-center h-screen bg-[#1a1d21]">
-      <Loader2 className="h-32 w-32 animate-spin text-[#8dc572]" />
+    <div className="flex justify-center items-center h-screen ">
+      <Loader2 className="h-32 w-32 animate-spin " />
     </div>
   )
 }
