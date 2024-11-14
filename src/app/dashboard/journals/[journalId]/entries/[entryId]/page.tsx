@@ -127,7 +127,7 @@ export default function EntryDetailsPage() {
   }
 
   return (
-    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8">
       <Button variant="ghost" onClick={() => router.back()} className="mb-4 hover:bg-transparent hover:text-primary transition-colors">
         <ArrowLeft className="mr-2 h-4 w-4" /> Back to Entries
       </Button>

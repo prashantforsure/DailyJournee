@@ -47,7 +47,7 @@ export default function HeroSection() {
       variants={staggerChildren}
       className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-50 to-pink-50"
     >
-      <div className="container mx-auto px-4 z-10">
+      <div className="container mx-auto px-4 z-10 ">
         <motion.h1
           variants={fadeIn}
           className="text-5xl md:text-7xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-pink-600"

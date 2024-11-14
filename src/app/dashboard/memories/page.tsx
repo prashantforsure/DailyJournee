@@ -152,14 +152,14 @@ export default function MemoriesPage() {
           className="bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
         >
           <ChevronLeft className="mr-2 h-4 w-4" />
-          Previous Year
+          Previous
         </Button>
         <h2 className="text-2xl font-semibold text-gray-700">{selectedYear} Memories</h2>
         <Button 
           onClick={() => handleYearChange(1)}
           className="bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
         >
-          Next Year
+          Next
           <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>

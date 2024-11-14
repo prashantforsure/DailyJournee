@@ -22,13 +22,13 @@ const categorySchema = z.object({
     { params }: { params: Promise<{ journalId: string }> }
   ) {
     try {
-      const journalId = (await params).journalId
+      
       const session = await getServerSession(authOptions);
       
       if (!session?.user?.id) {
         return new NextResponse("Unauthorized", { status: 401 });
       }
-  
+      const journalId = (await params).journalId
       const categories = await prisma.category.findMany({
         where: {
           userId: session.user.id,

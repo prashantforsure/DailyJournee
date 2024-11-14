@@ -142,7 +142,7 @@ export default function NewEntryPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] py-10 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#F8F9FA] py-3 px-4 sm:px-6 lg:px-8">
       <Card className="max-w-4xl mx-auto shadow-lg">
         <CardHeader className="bg-[#BFEAF5] text-gray-800">
           <CardTitle className="text-3xl font-bold">New Entry</CardTitle>

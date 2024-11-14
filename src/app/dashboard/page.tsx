@@ -78,7 +78,7 @@ export default function DashboardPage() {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 mb-10">
         <RecentCard title="Recent Journals" >
           <JournalList journals={dashboardData.recentJournals} />
         </RecentCard>

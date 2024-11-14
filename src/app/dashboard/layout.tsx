@@ -41,8 +41,10 @@ export default function DashboardLayout({
       <aside className="hidden md:block w-64 bg-white border-r border-[#DBDBDB]">
         <div className="p-4 border-b border-[#DBDBDB]">
         <div className='flex'>
+          
         <Feather className="h-8 w-8 text-[#8dc572]" />
-        <span className="ml-2 text-xl font-bold text-[#080707]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span>
+        <span className="ml-2 text-xl font-bold text-[#080707]" style={{ fontFamily: '"Agatha", cursive' }}><Link href='/'>Daily Journee</Link></span>
+        
         </div>
         </div>
         <nav className="mt-6">
@@ -67,8 +69,12 @@ export default function DashboardLayout({
         <header className="bg-white border-b border-[#DBDBDB] sticky top-0 z-10">
           <div className="max-w-5xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             
-          <div className='flex md:hidden'><Feather className="h-8 w-8 text-[#8dc572]" />
-          <span className="ml-2 text-xl font-bold text-[#e0e0e0]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span></div>
+          <div className='flex md:hidden'>
+      
+        <Feather className="h-8 w-8 text-[#8dc572]" />
+        <span className="ml-2 text-xl font-bold text-[#080707]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span>
+
+        </div>
           <span className='text-white'>.</span>
             <div className="flex items-center space-x-4">
               <DropdownMenu>

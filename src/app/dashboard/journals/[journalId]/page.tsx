@@ -129,22 +129,22 @@ export default function JournalDetailsPage() {
   }
 
   return (
-    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-primary">
           {journal.icon && <span className="mr-2">{journal.icon}</span>}
           {journal.name}
         </h1>
         <div className="flex items-center space-x-2">
-          <Button onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)} className="hidden sm:inline-flex">
+          {/* <Button onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)} className="hidden sm:inline-flex">
             <Edit className="mr-2 h-4 w-4" /> Edit Journal
           </Button>
           <Button variant="destructive" onClick={() => setIsDeleteDialogOpen(true)} className="hidden sm:inline-flex">
             <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
-          </Button>
+          </Button> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="icon" className="sm:hidden">
+              <Button variant="outline" size="icon" className="">
                 <MoreVertical className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -152,9 +152,13 @@ export default function JournalDetailsPage() {
               <DropdownMenuItem onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)}>
                 <Edit className="mr-2 h-4 w-4" /> Edit Journal
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push(`/dashboard/journals/${journal.id}/categories`)}>
+                <Edit className="mr-2 h-4 w-4" /> Journal Categories
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
               </DropdownMenuItem>
+              
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
