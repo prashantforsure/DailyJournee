@@ -7,7 +7,12 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import { Feather, Loader2 } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { motion } from 'framer-motion'
-
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import { UserAccountNav } from './UserAccountNav'
 export default function Header() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -40,26 +45,41 @@ export default function Header() {
             <span className="ml-2 text-xl font-bold text-gradient-to-r from-blue-600 to-purple-600" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span>
           </Link>
           <div className="flex items-center space-x-6">
-            {status === 'loading' ? (
-              <Button disabled>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Please wait
-              </Button>
-            ) : session ? (
-              <Button
-                onClick={handleAuthAction}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:bg-gray-100 transition-colors duration-300"
-              >
-                Sign Out
-              </Button>
-            ) : (
-              <Button
-                onClick={handleAuthAction}
-                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white hover:bg-gray-100 transition-colors duration-300"
+            
+          <div className='flex items-center gap-4'>
+          {session?.user ? (
+            <>
+              <div className="hidden md:flex items-center gap-4">
+                <Link href='/dashboard'>
+                  <Button 
+                    variant="ghost" 
+                    className='rounded-full px-6 py-2 text-sm hover:text-[#A259FF] transition-colors text-black border border-slate-900'
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+               
+              </div>
+              
+              <UserAccountNav user={{
+                ...session.user,
+                image: session.user.image ?? "",
+                name: session.user.name ?? "",   
+                email: session.user.email ?? ""  
+              }} />
+            </>
+          ) : (
+            <Link href='/auth/signin'>
+              <Button 
+                variant="ghost" 
+                className='rounded-full px-6 py-2 text-white bg-gradient-to-r from-pink-500 to-violet-500 hover:from-pink-600 hover:to-violet-600 transition-all duration-300 ease-in-out hover:shadow-[0_0_15px_rgba(236,72,153,0.5)] hover:-translate-y-0.5'
               >
                 Sign In
               </Button>
-            )}
+            </Link>
+          )}
+        </div>
+            
           </div>
         </div>
       </nav>
