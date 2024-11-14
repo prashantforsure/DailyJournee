@@ -315,7 +315,7 @@ export default function EditEntryPage() {
               <Label htmlFor="isFavorite" className="text-lg font-semibold text-gray-700">Mark as Favorite</Label>
             </div>
           </CardContent>
-          <CardFooter className="flex justify-between bg-[#BFEAF5]">
+          <CardFooter className="flex justify-between ">
             <Button 
               type="button" 
               variant="outline" 
