@@ -192,7 +192,7 @@ export default function CategoriesManagement() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[200px]">Name</TableHead>
-                    <TableHead>Color</TableHead>
+                    
                     <TableHead className="text-right">Entries Count</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
@@ -201,15 +201,7 @@ export default function CategoriesManagement() {
                   {categories.map((category) => (
                     <TableRow key={category.id}>
                       <TableCell className="font-medium">{category.name}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center space-x-2">
-                          <div 
-                            className="w-6 h-6 rounded-full" 
-                            style={{ backgroundColor: category.color }}
-                          />
-                          <span>{category.color}</span>
-                        </div>
-                      </TableCell>
+                  
                       <TableCell className="text-right">{category._count.entries}</TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end space-x-2">
