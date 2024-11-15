@@ -139,7 +139,7 @@ export default function MemoriesPage() {
   }
 
   return (
-    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 mb-8">
       <h1 className="text-2xl font-bold mb-8 text-gray-800">Your Memory Lane</h1>
 
       <div className="flex justify-between items-center mb-6">
@@ -179,7 +179,7 @@ export default function MemoriesPage() {
                 <div className="mt-4 flex flex-wrap gap-2">
                   {memory.mood && <Badge className="bg-[#FFD1DC] text-gray-800">{memory.mood}</Badge>}
                   {memory.category && (
-                    <Badge style={{backgroundColor: memory.category.color}} className="text-gray-800">
+                    <Badge style={{backgroundColor: memory.category.color}} className="text-white">
                       {memory.category.name}
                     </Badge>
                   )}

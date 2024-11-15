@@ -83,7 +83,7 @@ export default function JournalsPage() {
   }
 
   return (
-    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8">
+    <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8 mb-8">
       {/* <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold text-primary text-white">.</h1>
         <Button onClick={() => router.push('/dashboard/journals/new')} className="bg-green-500 hover:bg-green-600 text-white">

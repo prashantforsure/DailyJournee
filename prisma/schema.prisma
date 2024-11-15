@@ -12,7 +12,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-// NextAuth.js Required Models
+
 model Account {
   id                String  @id @default(cuid())
   userId            String
