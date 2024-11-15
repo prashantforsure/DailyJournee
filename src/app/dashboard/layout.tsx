@@ -61,7 +61,7 @@ export default function DashboardLayout({
               href={item.href}
               className={cn(
                 "flex items-center px-4 py-2 text-[#262626] hover:bg-[#FAFAFA] hover:text-[#BFEAF5] transition-colors duration-200 rounded-sm mx-2",
-                pathname === item.href && "bg-[#FAFAFA] text-[#BFEAF5] font-medium"
+                pathname === item.href && "bg-[#FAFAFA] text-[#34d6ff] font-medium"
               )}
             >
               <item.icon className="w-5 h-5 mr-3" />

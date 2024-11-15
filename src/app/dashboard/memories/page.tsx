@@ -130,7 +130,7 @@ export default function MemoriesPage() {
     try {
       const response = await axios.post(`/api/memories/time-capsules/${id}/open`)
       toast.success('Time capsule opened!')
-      // Update the UI to show the opened time capsule
+     
       setTimeCapsules(prevCapsules => 
         prevCapsules.map(capsule => 
           capsule.id === id ? { ...capsule, ...response.data } : capsule
@@ -166,7 +166,7 @@ export default function MemoriesPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-[#98FF98]" />
+           <Loader2 className="h-8 w-8 animate-spin text-[#48d2f5]" />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
