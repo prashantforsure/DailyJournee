@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from '@/components/UserAvatar'
 import { useRouter } from 'next/navigation'
+import { ThemeToggle } from '@/components/theme-toggle'
 const navigationItems = [
   { icon: Home, label: 'Overview', href: '/dashboard' },
   { icon: Book, label: 'Journals', href: '/dashboard/journals' },
@@ -82,6 +83,7 @@ export default function DashboardLayout({
 
         </div>
           <span className='text-white'>.</span>
+   
             <div className="flex items-center space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

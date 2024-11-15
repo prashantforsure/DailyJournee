@@ -44,6 +44,7 @@ interface Entry {
   isFavorite: boolean
 }
 
+
 interface JournalDetails {
   id: string
   name: string
@@ -140,7 +141,7 @@ export default function JournalDetailsPage() {
     <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-primary">
-          {journal.icon && <span className="mr-2">{journal.icon}</span>}
+          {/* {journal.icon && <span className="mr-2">{journal.icon}</span>} */}
           {journal.name}
         </h1>
         <div className="flex items-center space-x-2">

@@ -154,7 +154,7 @@ export default function NewEntryPage() {
               <Input
                 id="title"
                 {...register('title')}
-                className="text-xl font-semibold border-2 border-[#FFD1DC] focus:border-[#98FF98] focus:ring-[#98FF98]"
+                className="text-lg font-semibold border-2 border-[#FFD1DC] focus:border-[#98FF98] focus:ring-[#98FF98]"
                 placeholder="Enter your entry title..."
               />
               {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}

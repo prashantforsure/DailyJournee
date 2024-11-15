@@ -84,12 +84,12 @@ export default function JournalsPage() {
 
   return (
     <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-primary">Your Journals</h1>
+      {/* <div className="flex justify-between items-center">
+        <h1 className="text-xl font-bold text-primary text-white">.</h1>
         <Button onClick={() => router.push('/dashboard/journals/new')} className="bg-green-500 hover:bg-green-600 text-white">
           <Plus className="mr-2 h-4 w-4" /> New Journal
         </Button>
-      </div>
+      </div> */}
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative flex-1 w-full sm:w-auto">
@@ -136,7 +136,12 @@ export default function JournalsPage() {
           </Button>
         </div>
       </div>
-
+      <div className="flex justify-between items-center">
+        <h1 className="text-xl font-bold text-primary text-white">.</h1>
+        <Button onClick={() => router.push('/dashboard/journals/new')} className="bg-green-500 hover:bg-green-600 text-white">
+          <Plus className="mr-2 h-4 w-4" /> New Journal
+        </Button>
+      </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />

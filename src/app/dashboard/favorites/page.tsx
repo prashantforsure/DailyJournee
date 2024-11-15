@@ -121,9 +121,9 @@ export default function FavoritesPage() {
 
   return (
     <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8 space-y-8">
-      <div className="flex justify-between items-center">
+      {/* <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold text-primary">Favorite Entries</h1>
-      </div>
+      </div> */}
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative flex-1 w-full sm:w-auto">
