@@ -166,7 +166,7 @@ export default function NewEntryPage() {
                 id="content"
                 {...register('content')}
                 className="min-h-[200px] border-2 border-[#FFD1DC] focus:border-[#98FF98] focus:ring-[#98FF98]"
-                placeholder="Write your journal entry here..."
+                placeholder="Press // to write prompt for AI Assistance..."
               />
               {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
               <Button 

@@ -50,14 +50,7 @@ export default function Header() {
           {session?.user ? (
             <>
               <div className="hidden md:flex items-center gap-4">
-                <Link href='/dashboard'>
-                  <Button 
-                    variant="ghost" 
-                    className='rounded-full px-6 py-2 text-sm hover:text-[#A259FF] transition-colors text-black border border-slate-900'
-                  >
-                    Dashboard
-                  </Button>
-                </Link>
+               
                
               </div>
               
