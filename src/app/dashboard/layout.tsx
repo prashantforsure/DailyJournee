@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from '@/components/UserAvatar'
 import { useRouter } from 'next/navigation'
-import { ThemeToggle } from '@/components/theme-toggle'
+
 const navigationItems = [
   { icon: Home, label: 'Overview', href: '/dashboard' },
   { icon: Book, label: 'Journals', href: '/dashboard/journals' },
