@@ -1,13 +1,18 @@
-// app/dashboard/entries/page.tsx
+
 'use client'
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { Star, Search, Calendar, Eye } from 'lucide-react'
+import { Star, Search, Calendar, Eye, Plus } from 'lucide-react'
 import { toast } from 'react-hot-toast'
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -162,7 +167,9 @@ export default function EntriesPage() {
           </Card>
         ))}
       </div>
+      
       )}
+      
     </div>
   )
 }

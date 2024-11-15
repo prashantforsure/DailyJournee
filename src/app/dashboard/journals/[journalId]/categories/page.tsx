@@ -113,7 +113,7 @@ export default function CategoriesManagement() {
   }
 
   return (
-    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 mb-8">
       <Card className="bg-white shadow-md hover:shadow-lg transition-shadow duration-300">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-6 border-b">
           <CardTitle className="text-2xl sm:text-3xl font-bold text-gray-800">Categories Management</CardTitle>

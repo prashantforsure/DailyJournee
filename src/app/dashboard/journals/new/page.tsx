@@ -97,7 +97,7 @@ export default function NewJournalPage() {
   }
 
   return (
-    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div className="container mx-auto py-10 px-4 sm:px-6 lg:px-8 mb-8">
       <Card className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
         <CardHeader className="bg-blue-100  p-6">
           <CardTitle className="text-3xl font-bold">Create New Journal</CardTitle>
