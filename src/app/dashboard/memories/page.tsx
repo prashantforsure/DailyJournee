@@ -4,16 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
-import { 
-  
-  Clock, 
-  ChevronLeft, 
-  ChevronRight, 
-  Loader2,
-  BookOpen,
-  Gift,
-  TrendingUp
-} from 'lucide-react'
+import { Clock, ChevronLeft, ChevronRight, Loader2, BookOpen, Gift, TrendingUp } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 import { Button } from "@/components/ui/button"
@@ -44,14 +35,19 @@ interface Memory {
   content: string
   createdAt: string
   mood?: string
-  category?: string
+  category?: {
+    id: string
+    name: string
+    color: string
+    userId: string
+  }
 }
 
 interface YearlyReview {
   year: number
   totalEntries: number
   topMoods: { mood: string; count: number }[]
-  topCategories: { category: string; count: number }[]
+  topCategories: { category: { id: string; name: string; color: string; userId: string }; count: number }[]
 }
 
 interface TimeCapsule {
@@ -182,7 +178,11 @@ export default function MemoriesPage() {
                 <p className="text-gray-600 line-clamp-3">{memory.content}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {memory.mood && <Badge className="bg-[#FFD1DC] text-gray-800">{memory.mood}</Badge>}
-                  {memory.category && <Badge className="bg-[#FFFFD1] text-gray-800">{memory.category}</Badge>}
+                  {memory.category && (
+                    <Badge style={{backgroundColor: memory.category.color}} className="text-gray-800">
+                      {memory.category.name}
+                    </Badge>
+                  )}
                 </div>
               </CardContent>
               <CardFooter>
@@ -202,47 +202,47 @@ export default function MemoriesPage() {
 
       <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-800">Yearly Review</h2>
       {yearlyReviews.length > 0 ? (
-    yearlyReviews.map((review) => (
-      <Card key={review.year} className="mb-6 bg-white shadow-md">
-        <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-gray-700">{review.year} in Review</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-700">Journal Stats</h3>
-              <p className="text-gray-600">Total Entries: {review.totalEntries}</p>
-              <h4 className="text-md font-semibold mt-4 mb-2 text-gray-700">Top Moods</h4>
-              <ul className="list-disc list-inside">
-                {review.topMoods.map((mood, index) => (
-                  <li key={index} className="text-gray-600">{mood.mood}: {mood.count} entries</li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-md font-semibold mb-2 text-gray-700">Top Categories</h4>
-              <ul className="list-disc list-inside">
-                {review.topCategories.map((category, index) => (
-                  <li key={index} className="text-gray-600">{category.category}: {category.count} entries</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </CardContent>
-        <CardFooter>
-          <Button
-            onClick={() => router.push(`/journals/yearly-review/${review.year}`)}
-            className="w-full bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200"
-          >
-            <TrendingUp className="mr-2 h-4 w-4" />
-            View Detailed Review
-          </Button>
-        </CardFooter>
-      </Card>
-    ))
-  ) : (
-    <p className="text-center text-gray-500">No yearly reviews available.</p>
-  )}
+        yearlyReviews.map((review) => (
+          <Card key={review.year} className="mb-6 bg-white shadow-md">
+            <CardHeader>
+              <CardTitle className="text-2xl font-semibold text-gray-700">{review.year} in Review</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-lg font-semibold mb-2 text-gray-700">Journal Stats</h3>
+                  <p className="text-gray-600">Total Entries: {review.totalEntries}</p>
+                  <h4 className="text-md font-semibold mt-4 mb-2 text-gray-700">Top Moods</h4>
+                  <ul className="list-disc list-inside">
+                    {review.topMoods.map((mood, index) => (
+                      <li key={index} className="text-gray-600">{mood.mood}: {mood.count} entries</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="text-md font-semibold mb-2 text-gray-700">Top Categories</h4>
+                  <ul className="list-disc list-inside">
+                    {review.topCategories.map((category, index) => (
+                      <li key={index} className="text-gray-600">{category.category.name}: {category.count} entries</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button
+                onClick={() => router.push(`/journals/yearly-review/${review.year}`)}
+                className="w-full bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200"
+              >
+                <TrendingUp className="mr-2 h-4 w-4" />
+                View Detailed Review
+              </Button>
+            </CardFooter>
+          </Card>
+        ))
+      ) : (
+        <p className="text-center text-gray-500">No yearly reviews available.</p>
+      )}
 
       <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-800">Time Capsules</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -338,7 +338,9 @@ export default function MemoriesPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={handleCreateTimeCapsule} className="bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200">Create Time Capsule</Button>
+            <Button onClick={handleCreateTimeCapsule} className="bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200">
+              Create Time Capsule
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
