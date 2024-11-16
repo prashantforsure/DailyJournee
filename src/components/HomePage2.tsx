@@ -15,7 +15,6 @@ import { useRouter } from 'next/router'
 import Header from './Header'
 import HeroSection from './HeroSection'
 
-// Animations
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -118,9 +117,6 @@ const FeatureShowcase = () => {
    )}
   
   
-
-
-// Benefits Explanation
 const BenefitsExplanation = () => {
   const controls = useAnimation()
   const [ref, inView] = useInView()
@@ -189,7 +185,6 @@ const BenefitsExplanation = () => {
   )
 }
 
-// Call-to-Action Section
 const CallToAction = () => {
   return (
     <motion.section
@@ -222,7 +217,6 @@ const CallToAction = () => {
   )
 }
 
-// User Testimonials
 const UserTestimonials = () => {
   const controls = useAnimation()
   const [ref, inView] = useInView()
