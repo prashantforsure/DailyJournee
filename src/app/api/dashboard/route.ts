@@ -58,27 +58,43 @@ export async function GET() {
 }
 
 async function calculateStreak(userId: string): Promise<number> {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
+  const now = new Date()
+  
   const entries = await prisma.entry.findMany({
     where: { journal: { userId } },
     orderBy: { createdAt: 'desc' },
     select: { createdAt: true }
   })
 
-  let streak = 0
-  const currentDate = today
+  if (entries.length === 0) return 0
 
-  for (const entry of entries) {
-    const entryDate = new Date(entry.createdAt)
-    entryDate.setHours(0, 0, 0, 0)
+  const mostRecentEntry = new Date(entries[0].createdAt)
+    const hoursSinceLastEntry = (now.getTime() - mostRecentEntry.getTime()) / (1000 * 60 * 60)
+  
+  if (hoursSinceLastEntry > 48) {
+    return 0
+  }
+      let streak = 1 
+  let currentDate = new Date(mostRecentEntry)
+  currentDate.setHours(0, 0, 0, 0)
 
-    if (entryDate.getTime() === currentDate.getTime()) {
+  for (let i = 1; i < entries.length; i++) {
+        const entryDate = new Date(entries[i].createdAt)
+     entryDate.setHours(0, 0, 0, 0)
+    
+    const previousDate = new Date(currentDate)
+       previousDate.setDate(previousDate.getDate() - 1)
+  
+    if (entryDate.getTime() === previousDate.getTime()) {
       streak++
-      currentDate.setDate(currentDate.getDate() - 1)
-    } else if (entryDate.getTime() < currentDate.getTime()) {
-      break
+      currentDate = entryDate
+    } 
+    else if (entryDate.getTime() < previousDate.getTime()) {
+  break
+    }
+    
+    else if (entryDate.getTime() === currentDate.getTime()) {
+         continue
     }
   }
 

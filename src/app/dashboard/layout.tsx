@@ -109,10 +109,10 @@ export default function DashboardLayout({
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-[#DBDBDB]" />
-                  <DropdownMenuItem className="text-sm">
+                  {/* <DropdownMenuItem className="text-sm">
                     <Settings className="mr-2 h-4 w-4" />
                     <span>Settings</span>
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuSeparator className="bg-[#DBDBDB]" />
                   <DropdownMenuItem onClick={() => signOut()} className="text-sm">
                     <LogOut className="mr-2 h-4 w-4" />
