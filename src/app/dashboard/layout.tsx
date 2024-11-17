@@ -27,7 +27,7 @@ const navigationItems = [
   { icon: Star, label: 'Favorites', href: '/dashboard/favorites' },
   { icon: Calendar, label: 'Memories', href: '/dashboard/memories' },
   { icon: Search, label: 'Search', href: '/dashboard/search' },
-  { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+
 ]
 
 export default function DashboardLayout({

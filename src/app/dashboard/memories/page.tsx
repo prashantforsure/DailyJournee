@@ -345,7 +345,7 @@ export default function MemoriesPage() {
         </DialogContent>
       </Dialog>
 
-      <TooltipProvider>
+     <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
             <Button

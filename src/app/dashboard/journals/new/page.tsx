@@ -158,7 +158,7 @@ export default function NewJournalPage() {
               {errors.icon && <p className="text-sm text-red-500 mt-1">{errors.icon.message}</p>}
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label htmlFor="categoryId" className="text-sm font-medium text-gray-700">Category</Label>
               <Controller
                 name="categoryId"
@@ -178,7 +178,7 @@ export default function NewJournalPage() {
                   </Select>
                 )}
               />
-            </div>
+            </div> */}
           </CardContent>
           <CardFooter className="bg-gray-50 px-6 py-4">
             <Button 

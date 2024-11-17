@@ -164,6 +164,9 @@ export default function JournalDetailsPage() {
               <DropdownMenuItem onClick={() => router.push(`/dashboard/journals/${journal.id}/categories`)}>
                 <Edit className="mr-2 h-4 w-4" /> Journal Categories
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push(`/dashboard/journals/${journal.id}/favorites`)}>
+                <Edit className="mr-2 h-4 w-4" /> Favorites
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
               </DropdownMenuItem>
