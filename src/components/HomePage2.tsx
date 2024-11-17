@@ -300,7 +300,6 @@ export default function Home1() {
       </div>
       <UserTestimonials />
       
-      <FAQSection />
       <Footer />
     </div>
   )
