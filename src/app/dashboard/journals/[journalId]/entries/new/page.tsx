@@ -169,24 +169,41 @@ export default function NewEntryPage() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-6 pt-6">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-lg font-semibold text-gray-700">Title</Label>
-              <Input
-                id="title"
-                {...register('title')}
-                className="text-lg font-semibold border-2 border-[#FFD1DC] focus:border-[#98FF98] focus:ring-[#98FF98]"
-                placeholder="Enter your entry title..."
-              />
+              <div className="relative">
+                <input
+                  type="text"
+                  id="title"
+                  {...register('title')}
+                  className="w-full text-lg font-semibold border-b-2 border-[#ccc] bg-transparent outline-none py-2 px-0 transition-all duration-300 focus:border-[#333] peer"
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="title"
+                  className="absolute left-0 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-[#333] peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Title
+                </label>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#333] transform scale-x-0 transition-transform duration-300 origin-bottom-left peer-focus:scale-x-100"></div>
+              </div>
               {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="content" className="text-lg font-semibold text-gray-700">Content</Label>
-              <Textarea
-                id="content"
-                {...register('content')}
-                className="min-h-[200px] border-2 border-[#FFD1DC] focus:border-[#98FF98] focus:ring-[#98FF98]"
-                placeholder="Press // to write prompt for AI Assistance..."
-              />
+              <div className="relative">
+                <textarea
+                  id="content"
+                  {...register('content')}
+                  className="w-full min-h-[200px] text-base border-b-2 border-[#ccc] bg-transparent outline-none py-2 px-0 transition-all duration-300 focus:border-[#333] peer"
+                  placeholder="Press // to write prompt for AI Assistance"
+                />
+                <label
+                  htmlFor="content"
+                  className="absolute left-0 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-[#333] peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Content
+                </label>
+                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#333] transform scale-x-0 transition-transform duration-300 origin-bottom-left peer-focus:scale-x-100"></div>
+              </div>
               {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
               <Button 
                 type="button" 

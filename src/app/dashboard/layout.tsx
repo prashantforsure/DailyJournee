@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from '@/components/UserAvatar'
 import { useRouter } from 'next/navigation'
-import { Input } from "@/components/ui/input"
+
 
 const navigationItems = [
   { icon: Home, label: 'Overview', href: '/dashboard' },
