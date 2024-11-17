@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
+import Loader from '@/components/Loader'
 
 interface FavoriteEntry {
   id: string
@@ -155,7 +156,7 @@ export default function FavoritesPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-[#5ad7f7]" />
+        <Loader />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -34,6 +34,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link'
+import Loader from '@/components/Loader'
 
 interface Entry {
   id: string
@@ -129,7 +130,7 @@ export default function JournalDetailsPage() {
 
   if (isLoading) {
     return  <div className="flex justify-center items-center h-64 mb-8">
-    <Loader2 className="h-8 w-8 animate-spin text-[#5fd5f3]" />
+      <Loader />
   </div>
   }
 

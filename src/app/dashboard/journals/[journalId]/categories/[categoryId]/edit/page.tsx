@@ -31,6 +31,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import Loader from '@/components/Loader';
 
 interface Category {
   id: string;
@@ -101,7 +102,7 @@ export default function EditCategoryPage() {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
+         <Loader />
       </div>
     );
   }

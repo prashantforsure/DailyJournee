@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Badge } from "@/components/ui/badge"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar1 } from "@/components/ui/calendar"
+import Loader from '@/components/Loader'
 
 
 interface SearchResult {
@@ -115,7 +116,7 @@ export default function SearchPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-[#5cddfd]" />
+           <Loader />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -34,6 +34,7 @@ import {
  
 } from "@/components/ui/dialog";
 import {  Pen, Notebook, Calendar, Star } from "lucide-react";
+import Loader from '@/components/Loader';
 
 const journalSchema = z.object({
   name: z.string().min(1, "Journal name is required").max(100, "Journal name must be 100 characters or less"),
@@ -158,7 +159,9 @@ export default function EditJournalPage() {
   };
 
   if (isLoading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return <div className="flex justify-center items-center h-screen">
+        <Loader />
+    </div>;
   }
 
   return (

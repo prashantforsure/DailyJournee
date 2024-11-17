@@ -28,6 +28,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import Loader from '@/components/Loader'
 
 interface Memory {
   id: string
@@ -162,7 +163,7 @@ export default function MemoriesPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-           <Loader2 className="h-8 w-8 animate-spin text-[#48d2f5]" />
+             <Loader />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

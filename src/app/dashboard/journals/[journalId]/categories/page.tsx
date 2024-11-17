@@ -39,6 +39,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import Loader from '@/components/Loader'
 
 interface Category {
   id: string
@@ -184,7 +185,7 @@ export default function CategoriesManagement() {
         <CardContent className="pt-6">
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-[#BFEAF5]" />
+               <Loader />
             </div>
           ) : (
             <ScrollArea className="h-[calc(100vh-300px)] rounded-md border p-4">

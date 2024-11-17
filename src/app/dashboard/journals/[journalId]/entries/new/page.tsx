@@ -163,9 +163,9 @@ export default function NewEntryPage() {
   return (
     <div className="min-h-screen bg-[#F8F9FA] py-3 px-4 sm:px-6 lg:px-8 mb-8">
       <Card className="max-w-4xl mx-auto shadow-lg">
-        <CardHeader className="bg-[#BFEAF5] text-gray-800">
+        {/* <CardHeader className="bg-[#BFEAF5] text-gray-800">
           <CardTitle className="text-3xl font-bold">New Entry</CardTitle>
-        </CardHeader>
+        </CardHeader> */}
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="space-y-6 pt-6">
             <div className="space-y-2">
@@ -200,9 +200,9 @@ export default function NewEntryPage() {
                   htmlFor="content"
                   className="absolute left-0 top-2 text-gray-500 duration-300 transform -translate-y-6 scale-75 origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:text-[#333] peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  Content
+                  
                 </label>
-                <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#333] transform scale-x-0 transition-transform duration-300 origin-bottom-left peer-focus:scale-x-100"></div>
+                {/* <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#333] transform scale-x-0 transition-transform duration-300 origin-bottom-left peer-focus:scale-x-100"></div> */}
               </div>
               {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
               <Button 
@@ -401,7 +401,7 @@ export default function NewEntryPage() {
                 className="border-2 border-[#BFEAF5] focus:border-[#98FF98] focus:ring-[#98FF98]"
               />
             </div>
-            <div>
+            {/* <div>
               <Label htmlFor="categoryColor" className="text-sm font-medium text-gray-700">Category Color</Label>
               <Input
                 id="categoryColor"
@@ -410,7 +410,7 @@ export default function NewEntryPage() {
                 onChange={(e) => setNewCategory({ ...newCategory, color: e.target.value })}
                 className="h-10 p-1 border-2 border-[#BFEAF5] focus:border-[#98FF98] focus:ring-[#98FF98]"
               />
-            </div>
+            </div> */}
           </div>
           <DialogFooter>
             <Button 

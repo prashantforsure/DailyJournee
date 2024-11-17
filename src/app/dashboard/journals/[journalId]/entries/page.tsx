@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import Loader from '@/components/Loader'
 
 interface Entry {
   id: string
@@ -152,7 +153,7 @@ export default function EntryManagementPage() {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-           <Loader2 className="h-8 w-8 animate-spin text-[#BFEAF5]" />
+             <Loader />
         </div>
       ) : (
         <>
