@@ -59,8 +59,26 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      keyframes: {
+        wave1: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        wave2: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        wave3: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+      },
+      animation: {
+        'wave-1': 'wave1 55s infinite linear',
+        'wave-2': 'wave2 50s infinite linear',
+        'wave-3': 'wave3 45s infinite linear',
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
-

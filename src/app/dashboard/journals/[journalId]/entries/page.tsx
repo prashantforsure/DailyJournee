@@ -5,7 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import axios from 'axios'
 import { format } from 'date-fns'
 
-import { Search, Plus, Trash2, Edit3, Loader2 } from 'lucide-react'
+import { Search, Plus, Trash2, Edit3, Loader2, Eye } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
 import { Button } from "@/components/ui/button"
@@ -185,7 +185,7 @@ export default function EntryManagementPage() {
                       size="sm" 
                       onClick={() => router.push(`/dashboard/journals/${params.journalId}/entries/${entry.id}`)}
                     >
-                      <Edit3 className="h-4 w-4" />
+                       <Eye className="h-4 w-4 mr-2" /> View
                     </Button>
                     <Button 
                       variant="ghost" 

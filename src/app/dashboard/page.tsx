@@ -10,17 +10,13 @@ import { Skeleton } from "@/components/ui/skeleton"
 import JournalList from '@/components/JournalList'
 import RecentEntriesList from '@/components/entries/recent-entries-list'
 
-
 interface DashboardData {
   totalJournals: number
   totalEntries: number
   currentStreak: number
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentJournals: any[]
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
   recentEntries: any[]
 }
-
 
 async function getDashboardData(): Promise<DashboardData> {
   try {
@@ -65,15 +61,24 @@ export default function DashboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-8 mb-8">
-      {/* <h1 className="text-2xl font-bold text-primary">Dashboard</h1> */}
       <div className="grid gap-6 md:grid-cols-3">
-        <StatCard title="Total Journals" value={dashboardData.totalJournals} icon={Book} color="bg-pink-100" />
-        <StatCard title="Total Entries" value={dashboardData.totalEntries} icon={Edit3} color="bg-blue-100" />
+        <StatCard 
+          title="Total Journals" 
+          value={dashboardData.totalJournals} 
+          icon={Book} 
+          color="from-pink-400 via-purple-400 to-indigo-400" 
+        />
+        <StatCard 
+          title="Total Entries" 
+          value={dashboardData.totalEntries} 
+          icon={Edit3} 
+          color="from-blue-400 via-cyan-400 to-teal-400" 
+        />
         <StatCard 
           title="Streak" 
           value={`${dashboardData.currentStreak} days`} 
           icon={TrendingUp} 
-          color="bg-green-100"
+          color="from-green-400 via-lime-400 to-yellow-400"
           progress={dashboardData.currentStreak}
         />
       </div>
@@ -83,7 +88,6 @@ export default function DashboardPage() {
           <JournalList journals={dashboardData.recentJournals} />
         </RecentCard>
         <RecentCard title="Recent Entries">
-   
           <RecentEntriesList entries={dashboardData.recentEntries} />
         </RecentCard>
       </div>
@@ -99,13 +103,24 @@ function StatCard({ title, value, icon: Icon, color, progress }: {
   progress?: number;
 }) {
   return (
-    <Card className={`${color} transition-all duration-300 hover:shadow-lg`}>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+    <Card className={`relative overflow-hidden transition-all duration-300 hover:shadow-lg group`}>
+      <div className={`absolute inset-0 bg-gradient-to-br ${color} opacity-60`}></div>
+      {[...Array(3)].map((_, i) => (
+        <div 
+          key={i} 
+          className={`
+            absolute w-[200%] h-[200%] top-[-50%] left-[-50%] 
+            bg-gradient-to-br ${color}
+            animate-wave-${i + 1} rounded-[40%] opacity-30
+          `}
+        ></div>
+      ))}
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
+        <CardTitle className="text-sm font-medium text-white">{title}</CardTitle>
+        <Icon className="h-4 w-4 text-white" />
       </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+      <CardContent className="relative z-10">
+        <div className="text-2xl font-bold text-white">{value}</div>
         {progress !== undefined && (
           <Progress value={progress} max={30} className="mt-2" />
         )}
