@@ -55,7 +55,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen bg-[#FAFAFA]">
+    <div className="flex h-screen ">
       <aside className="hidden md:block w-64 bg-white border-r border-[#DBDBDB]">
         <div className="p-4 border-b border-[#DBDBDB]">
           <div className='flex'>
@@ -80,10 +80,10 @@ export default function DashboardLayout({
         </nav>
       </aside>
 
-      <main className="flex-1 flex flex-col overflow-hidden">
-        <header className="bg-white border-b border-[#DBDBDB] sticky top-0 z-10">
+      <main className="flex-1 flex flex-col overflow-hidden bg-gradient-to-r backdrop-blur-sm">
+        <header className=" border-b border-[#DBDBDB] rounded-md sticky top-0 z-10">
           <div className="max-w-5xl mx-auto py-3 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div className='flex md:hidden'>
+            <div className='flex bg-gradient-to-r backdrop-blur-md md:hidden'>
               <Feather className="h-8 w-8 text-[#8dc572]" />
               <span className="ml-2 text-xl font-bold text-[#080707]" style={{ fontFamily: '"Agatha", cursive' }}>Daily Journee</span>
             </div>
@@ -133,13 +133,13 @@ export default function DashboardLayout({
           </div>
         </header>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto bg-white">
           <div className="max-w-5xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
             {children}
           </div>
         </div>
 
-        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-[#DBDBDB]">
+        <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-gradient-to-r backdrop-blur-md border-t border-[#DBDBDB]">
           <div className="grid grid-cols-5 h-14">
             {navigationItems.slice(0, 5).map((item) => (
               <Link

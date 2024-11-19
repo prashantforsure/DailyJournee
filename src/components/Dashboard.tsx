@@ -66,7 +66,7 @@ export default function DashboardPage() {
   ]
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-8 mb-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 space-y-8 mb-8 bg-white">
       <div className="grid gap-6 md:grid-cols-3">
         {cardData.map((card, index) => (
           <StatCard key={index} {...card} />
@@ -116,18 +116,18 @@ function StatCard({ title, value, icon: Icon, gradient, progress }: {
 
 function RecentCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <Card className="transition-all duration-300 hover:shadow-lg">
-      <CardHeader>
-        <CardTitle className="text-xl font-semibold text-primary">{title}</CardTitle>
+    <Card className="transition-all duration-300 hover:shadow-lg bg-zinc-50">
+      <CardHeader className=''>
+        <CardTitle className="text-xl font-semibold text-primary ">{title}</CardTitle>
       </CardHeader>
-      <CardContent>{children}</CardContent>
+      <CardContent className=''>{children}</CardContent>
     </Card>
   )
 }
 
 function DashboardSkeleton() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 ">
       <Skeleton className="h-10 w-48" />
       <div className="grid gap-6 md:grid-cols-3">
         {[...Array(3)].map((_, i) => (
