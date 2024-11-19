@@ -113,7 +113,7 @@ export default function EntryManagementPage() {
   return (
     <div className="container mx-auto py-6 px-4 sm:px-6 lg:px-8 space-y-8 mb-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-4xl font-bold text-primary">Your Entries</h1>
+       <div className='text-transparent'>.</div>
         <Button onClick={() => router.push(`/dashboard/journals/${params.journalId}/entries/new`)} className="bg-green-500 hover:bg-green-600 text-white">
           <Plus className="mr-2 h-4 w-4" /> New Entry
         </Button>

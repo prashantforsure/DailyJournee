@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserAvatar } from '@/components/UserAvatar'
 import { useRouter } from 'next/navigation'
+import Loader from '@/components/Loader'
 
 
 const navigationItems = [
@@ -35,15 +36,23 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { data: session } = useSession()
+  const { data: session,status } = useSession()
   const pathname = usePathname()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!session) {
-      router.push('/')
+  React.useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin') 
     }
-  }, [session, router])
+  }, [status, router])
+
+  if (status === 'loading') {
+    return <div className="flex h-screen items-center justify-center"> <Loader /></div>
+  }
+
+  if (!session) {
+    return null
+  }
 
   return (
     <div className="flex h-screen bg-[#FAFAFA]">
