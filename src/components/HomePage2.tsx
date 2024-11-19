@@ -1,15 +1,19 @@
-
 'use client'
 
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 import Link from 'next/link'
-import { motion, useAnimation } from 'framer-motion'
+import { motion, useAnimation, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { Star, Heart, TrendingUp, Target } from 'lucide-react'
+import { ChevronRight, Star, Check, ArrowRight, Heart, TrendingUp, Target, Feather, Loader2 } from 'lucide-react'
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import Header from './Header'
 import HeroSection from './HeroSection'
-import AboutCard from './Aboutme'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -21,17 +25,19 @@ const staggerChildren = {
   visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
 }
 
-const Card = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="w-[300px] h-[200px] bg-gradient-to-br from-[#4158D0] via-[#C850C0] to-[#FFCC70] rounded-lg text-white overflow-hidden relative transform-gpu preserve-3d perspective-1000 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] cursor-pointer hover:rotate-y-10 hover:rotate-x-10 hover:scale-105 hover:shadow-lg group">
-      <div className="p-5 relative z-10 flex flex-col gap-2.5 items-center justify-center text-center h-full">
-        {children}
-      </div>
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[rgba(0,0,0,0.1)] transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-[-100%]"></div>
-      <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[rgba(0,0,0,0.1)] transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover:translate-x-[100%]"></div>
-    </div>
-  )
+const floatAnimation = {
+  y: ['-2%', '2%'],
+  transition: {
+    y: {
+      duration: 2,
+      repeat: Infinity,
+      repeatType: 'reverse',
+      ease: 'easeInOut'
+    }
+  }
 }
+
+
 
 const FeatureShowcase = () => {
   const controls = useAnimation()
@@ -44,12 +50,23 @@ const FeatureShowcase = () => {
   }, [controls, inView])
 
   const features = [
-    { title: 'Quick Entry', description: 'Jot down your thoughts in seconds with our streamlined interface.', icon: '⚡️' },
-    { title: 'AI-Powered Insights', description: 'Gain deeper understanding of your entries with intelligent analysis.', icon: '🧠' },
-    { title: 'Multimedia Support', description: 'Enrich your journal with photos, audio, and video content.', icon: '🎨' },
-    { title: 'Cross-Device Sync', description: 'Access your journal from anywhere, on any device.', icon: '🔄' },
-    { title: 'Advanced Organization', description: 'Easily categorize and find entries with tags and smart filters.', icon: '📊' },
-    { title: 'Privacy First', description: 'Your thoughts are yours alone, with end-to-end encryption.', icon: '🔒' }
+    {
+      title: 'Quick Entry',
+      description: 'Jot down your thoughts in seconds with our streamlined interface.',
+      icon: '⚡️'
+    },
+    {
+      title: 'AI-Powered Insights',
+      description: 'Gain deeper understanding of your entries with intelligent analysis.',
+      icon: '🧠'
+    },
+ 
+    {
+      title: 'Advanced Organization',
+      description: 'Easily categorize and find entries with tags and smart filters.',
+      icon: '📊'
+    },
+   
   ]
 
   return (
@@ -58,7 +75,7 @@ const FeatureShowcase = () => {
       animate={controls}
       initial="hidden"
       variants={staggerChildren}
-      className="py-10 bg-white"
+      className="py-20 bg-white"
     >
       <div className="container mx-auto px-4">
         <motion.h2
@@ -67,22 +84,26 @@ const FeatureShowcase = () => {
         >
           Powerful Features for Your Journey
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <motion.div key={index} variants={fadeIn}>
-              <Card>
-                <div className="text-4xl mb-2">{feature.icon}</div>
-                <p className="text-2xl font-bold uppercase">{feature.title}</p>
-                <p className="text-sm opacity-80">{feature.description}</p>
+              <Card className="h-full transition-all duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <div className="text-4xl mb-2">{feature.icon}</div>
+                  <CardTitle className="text-xl font-semibold">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{feature.description}</p>
+                </CardContent>
               </Card>
             </motion.div>
           ))}
         </div>
-      </div>
-    </motion.section>
-  )
-}
-
+        </div>
+      </motion.section>
+   )}
+  
+  
 const BenefitsExplanation = () => {
   const controls = useAnimation()
   const [ref, inView] = useInView()
@@ -94,10 +115,22 @@ const BenefitsExplanation = () => {
   }, [controls, inView])
 
   const benefits = [
-    { title: 'Enhance Self-Reflection', description: 'Deepen your understanding of yourself through guided journaling prompts and AI-powered insights.', icon: <Star className="h-8 w-8 text-yellow-500" /> },
-    // { title: 'Boost Mental Well-being', description: 'Improve your emotional awareness and reduce stress through regular journaling practice.', icon: <Heart className="h-8 w-8 text-red-500" /> },
-    { title: 'Track Personal Growth', description: 'Visualize your progress over time with advanced analytics and mood tracking features.', icon: <TrendingUp className="h-8 w-8 text-green-500" /> },
-    { title: 'Increase Productivity', description: 'Set and achieve your goals more effectively by documenting your journey and learnings.', icon: <Target className="h-8 w-8 text-blue-500" /> }
+    {
+      title: 'Enhance Self-Reflection',
+      description: 'Deepen your understanding of yourself through guided journaling prompts and AI-powered insights.',
+      icon: <Star className="h-8 w-8 text-yellow-500" />
+    },
+  
+    {
+      title: 'Track Personal Growth',
+      description: 'Visualize your progress over time with advanced analytics and mood tracking features.',
+      icon: <TrendingUp className="h-8 w-8 text-green-500" />
+    },
+    {
+      title: 'Increase Productivity',
+      description: 'Set and achieve your goals more effectively by documenting your journey and learnings.',
+      icon: <Target className="h-8 w-8 text-blue-500" />
+    }
   ]
 
   return (
@@ -106,7 +139,7 @@ const BenefitsExplanation = () => {
       animate={controls}
       initial="hidden"
       variants={staggerChildren}
-      className="py-10 bg-gray-50"
+      className="py-20 bg-gray-50"
     >
       <div className="container mx-auto px-4">
         <motion.h2
@@ -115,13 +148,17 @@ const BenefitsExplanation = () => {
         >
           Transform Your Life Through Journaling
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {benefits.map((benefit, index) => (
             <motion.div key={index} variants={fadeIn}>
-              <Card>
-                {benefit.icon}
-                <p className="text-2xl font-bold uppercase">{benefit.title}</p>
-                <p className="text-sm opacity-80">{benefit.description}</p>
+              <Card className="h-full transition-all duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <div className="mb-4">{benefit.icon}</div>
+                  <CardTitle className="text-xl font-semibold">{benefit.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600">{benefit.description}</p>
+                </CardContent>
               </Card>
             </motion.div>
           ))}
@@ -130,6 +167,7 @@ const BenefitsExplanation = () => {
     </motion.section>
   )
 }
+
 
 const UserTestimonials = () => {
   const controls = useAnimation()
@@ -142,9 +180,24 @@ const UserTestimonials = () => {
   }, [controls, inView])
 
   const testimonials = [
-    { name: 'Adarsh', role: 'Student', content: 'This journaling app has been a game-changer for my personal growth. The AI insights have helped me uncover patterns I never noticed before.', avatar: '/placeholder.svg' },
-    { name: 'Drishtant', role: 'Student', content: 'As a busy student, I love how quick and easy it is to jot down my thoughts. The cross-device sync is perfect for my lifestyle.', avatar: '/placeholder.svg' },
-    { name: 'Shubh', role: 'Teacher', content: 'I recommend this app to all my clients. It\'s an incredible tool for self-reflection and emotional awareness.', avatar: '/placeholder.svg' }
+    {
+      name: 'Adarsh',
+      role: 'Student',
+      content: 'This journaling app has been a game-changer for my personal growth. The AI insights have helped me uncover patterns I never noticed before.',
+      avatar: '/placeholder.svg'
+    },
+    {
+      name: 'Drishtant',
+      role: 'Student',
+      content: 'As a busy student, I love how quick and easy it is to jot down my thoughts. The cross-device sync is perfect for my lifestyle.',
+      avatar: '/placeholder.svg'
+    },
+    {
+      name: 'Shubh',
+      role: 'Teacher',
+      content: 'I recommend this app to all my clients. Its an incredible tool for self-reflection and emotional awareness.',
+      avatar: '/placeholder.svg'
+    }
   ]
 
   return (
@@ -153,7 +206,7 @@ const UserTestimonials = () => {
       animate={controls}
       initial="hidden"
       variants={staggerChildren}
-      className="py-10 bg-white"
+      className="py-20 bg-white"
     >
       <div className="container mx-auto px-4">
         <motion.h2
@@ -162,21 +215,25 @@ const UserTestimonials = () => {
         >
           What Our Users Say
         </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
             <motion.div key={index} variants={fadeIn}>
-              <Card>
-                <div className="flex items-center space-x-4 mb-2">
-                  <Avatar>
-                    <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
-                    <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <p className="text-sm opacity-80">{testimonial.role}</p>
+              <Card className="h-full transition-all duration-300 hover:shadow-lg">
+                <CardHeader>
+                  <div className="flex items-center space-x-4">
+                    <Avatar>
+                      <AvatarImage src={testimonial.avatar} alt={testimonial.name} />
+                      <AvatarFallback>{testimonial.name[0]}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <CardTitle className="text-lg font-semibold">{testimonial.name}</CardTitle>
+                      <CardDescription>{testimonial.role}</CardDescription>
+                    </div>
                   </div>
-                </div>
-                <p className="text-sm italic">"{testimonial.content}"</p>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 italic">"{testimonial.content}"</p>
+                </CardContent>
               </Card>
             </motion.div>
           ))}
@@ -186,63 +243,20 @@ const UserTestimonials = () => {
   )
 }
 
-const FAQSection = () => {
-  const controls = useAnimation()
-  const [ref, inView] = useInView()
 
-  useEffect(() => {
-    if (inView) {
-      controls.start('visible')
-    }
-  }, [controls, inView])
 
-  const faqs = [
-    { question: 'Is my journal data secure and private?', answer: 'Absolutely. We use end-to-end encryption to ensure that only you can access your journal entries. Your privacy is our top priority.' },
-    { question: 'Can I use the app offline?', answer: 'Yes, you can create and edit entries offline. Your changes will sync automatically when you\'re back online.' },
-    // { question: 'How does the AI-powered insight feature work?', answer: 'Our AI analyzes your entries to identify patterns, emotions, and topics. It then provides personalized insights and suggestions to help you gain deeper self-awareness.' },
-    { question: 'Is there a limit to how much I can write?', answer: 'No, there\'s no limit to the length or number of entries you can create. Write as much as you want!' }
-  ]
-
-  return (
-    <motion.section
-      ref={ref}
-      animate={controls}
-      initial="hidden"
-      variants={staggerChildren}
-      className="py-10 mb-5 bg-gray-50"
-    >
-      <div className="container mx-auto px-4">
-        <motion.h2
-          variants={fadeIn}
-          className="text-4xl font-bold text-center mb-12 text-gray-800"
-        >
-          Frequently Asked Questions
-        </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
-          {faqs.map((faq, index) => (
-            <motion.div key={index} variants={fadeIn}>
-              <Card>
-                <p className="text-2xl font-bold uppercase mb-2">{faq.question}</p>
-                <p className="text-sm opacity-80">{faq.answer}</p>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </motion.section>
-  )
-}
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white py-12 ">
+    <footer className="bg-gray-800 text-white py-12">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h3 className="text-lg font-semibold mb-4">About Us</h3>
             <p className="text-gray-400">We're on a mission to help people lead more reflective and fulfilling lives through the power of journaling.</p>
           </div>
-         
+        
+          
           <div>
             <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
             <div className="flex space-x-4">
@@ -272,24 +286,15 @@ const Footer = () => {
   )
 }
 
-const AboutMe = () => {
-  return (
-    <div className="flex justify-center items-center min-h-screen max-w-3xl mx-auto p-3">
-      <AboutCard />
-    </div>
-  )
-}
-
 export default function Home1() {
+  
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+        <Header />
       <HeroSection />
       <FeatureShowcase />
       <BenefitsExplanation />
-      <div className="flex justify-center items-center p-3">
-        <AboutMe />
-      </div>
+    
       <UserTestimonials />
       
       <Footer />
