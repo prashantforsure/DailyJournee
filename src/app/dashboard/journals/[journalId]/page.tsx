@@ -172,9 +172,9 @@ export default function JournalDetailsPage() {
         </div>
       </div>
 
-      {journal.description && (
+      {/* {journal.description && (
         <p className="text-gray-600 mt-2">{journal.description}</p>
-      )}
+      )} */}
 
       {journal.category && (
         <Badge variant="secondary">{journal.category.name}</Badge>
