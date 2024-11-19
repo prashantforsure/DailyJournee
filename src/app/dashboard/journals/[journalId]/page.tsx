@@ -141,7 +141,7 @@ export default function JournalDetailsPage() {
   return (
     <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8 mb-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-primary">
+        <h1 className="text-2xl font-bold text-primary">
           {/* {journal.icon && <span className="mr-2">{journal.icon}</span>} */}
           {journal.name}
         </h1>

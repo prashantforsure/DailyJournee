@@ -150,7 +150,12 @@ export default function EntryManagementPage() {
           </Button>
         </div>
       </div>
-
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+       <div className='text-transparent'>.</div>
+        <Button onClick={() => router.push(`/dashboard/journals/${params.journalId}/entries/new`)} className="bg-green-500 hover:bg-green-600 text-white">
+          <Plus className="mr-2 h-4 w-4" /> New Entry
+        </Button>
+      </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
              <Loader />
