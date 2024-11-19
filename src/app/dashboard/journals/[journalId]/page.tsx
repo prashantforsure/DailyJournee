@@ -22,7 +22,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -44,7 +43,6 @@ interface Entry {
   mood: string
   isFavorite: boolean
 }
-
 
 interface JournalDetails {
   id: string
@@ -129,29 +127,27 @@ export default function JournalDetailsPage() {
   }
 
   if (isLoading) {
-    return  <div className="flex justify-center items-center h-64 mb-8">
+    return <div className="flex justify-center items-center min-h-screen">
       <Loader />
-  </div>
+    </div>
   }
 
   if (!journal) {
-    return <div className="flex justify-center items-center h-screen">Journal not found</div>
+    return <div className="flex justify-center items-center">Journal not found</div>
   }
+
+  const cardData = [
+    { title: 'Total Entries', value: journal.statistics.entryCount, icon: FileText, color: '#f89b29', gradient: 'from-[#f89b29] to-[#ff0f7b]' },
+    { title: 'Favorite Entries', value: journal.statistics.favoriteCount, icon: Heart, color: '#ff0f7b', gradient: 'from-[#ff0f7b] to-[#f89b29]' },
+    { title: 'Total Words', value: journal.statistics.totalWordCount, icon: FileText, color: '#00ddeb', gradient: 'from-[#00ddeb] to-[#5b42f3]' },
+    { title: 'Most Common Mood', value: Object.keys(journal.statistics.moodDistribution).length > 0 ? Object.entries(journal.statistics.moodDistribution).reduce((a, b) => a[1] > b[1] ? a : b)[0] : 'N/A', icon: BarChart2, color: '#5b42f3', gradient: 'from-[#5b42f3] to-[#00ddeb]' },
+  ]
 
   return (
     <div className="container mx-auto py-3 px-4 sm:px-6 lg:px-8 space-y-8 mb-8">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-primary">
-          {/* {journal.icon && <span className="mr-2">{journal.icon}</span>} */}
-          {journal.name}
-        </h1>
+        <h1 className="text-4xl font-extrabold text-primary">{journal.name}</h1>
         <div className="flex items-center space-x-2">
-          {/* <Button onClick={() => router.push(`/dashboard/journals/${journal.id}/edit`)} className="hidden sm:inline-flex">
-            <Edit className="mr-2 h-4 w-4" /> Edit Journal
-          </Button>
-          <Button variant="destructive" onClick={() => setIsDeleteDialogOpen(true)} className="hidden sm:inline-flex">
-            <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
-          </Button> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="">
@@ -171,7 +167,6 @@ export default function JournalDetailsPage() {
               <DropdownMenuItem onClick={() => setIsDeleteDialogOpen(true)}>
                 <Trash2 className="mr-2 h-4 w-4" /> Delete Journal
               </DropdownMenuItem>
-              
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -186,48 +181,21 @@ export default function JournalDetailsPage() {
       )}
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Card className={cardColors[0]}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Entries</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{journal.statistics.entryCount}</div>
-          </CardContent>
-        </Card>
-        <Card className={cardColors[1]}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Favorite Entries</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{journal.statistics.favoriteCount}</div>
-          </CardContent>
-        </Card>
-        <Card className={cardColors[2]}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Words</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{journal.statistics.totalWordCount}</div>
-          </CardContent>
-        </Card>
-        <Card className={cardColors[3]}>
-  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-    <CardTitle className="text-sm font-medium">Most Common Mood</CardTitle>
-    <BarChart2 className="h-4 w-4 text-muted-foreground" />
-  </CardHeader>
-  <CardContent>
-    <div className="text-2xl font-bold">
-      {Object.keys(journal.statistics.moodDistribution).length > 0 ? (
-        Object.entries(journal.statistics.moodDistribution).reduce((a, b) => a[1] > b[1] ? a : b)[0]
-      ) : (
-        'N/A'
-      )}
-    </div>
-  </CardContent>
-</Card>
+        {cardData.map((item, index) => (
+          <div key={index} className="e-card playing" style={{width: '100%', height: '200px', margin: '0'}}>
+            <div className="image"></div>
+            <div className={`wave bg-gradient-to-br ${item.gradient}`}></div>
+            <div className={`wave bg-gradient-to-br ${item.gradient}`}></div>
+            <div className={`wave bg-gradient-to-br ${item.gradient}`}></div>
+            <div className="infotop">
+              <div className="icon-wrapper">
+              <item.icon className="icon size-8" style={{color: 'white'}} />
+              </div>
+              <div className="title">{item.title}</div>
+              <div className="value">{item.value}</div>
+            </div>
+          </div>
+        ))}
       </div>
 
       <Card>
@@ -327,7 +295,6 @@ export default function JournalDetailsPage() {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-           
             <Button
               variant="outline"
               className="fixed bottom-16 right-8 mb-12 rounded-full w-12 h-12 bg-[#BFEAF5] text-gray-800 hover:bg-[#A0D8E8] transition-colors duration-200"
@@ -337,10 +304,108 @@ export default function JournalDetailsPage() {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>create enrty</p>
+            <p>Create entry</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
+      <style jsx>{`
+        .e-card {
+          background: transparent;
+          box-shadow: 0px 8px 28px -9px rgba(0,0,0,0.45);
+          position: relative;
+          overflow: hidden;
+          border-radius: 16px;
+        }
+
+        .wave {
+          position: absolute;
+          width: 540px;
+          height: 700px;
+          opacity: 0.6;
+          left: 0;
+          top: 0;
+          margin-left: -50%;
+          margin-top: -70%;
+        }
+
+        .icon-wrapper {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          height: 60px;
+        }
+
+        .icon {
+          width: 3em;
+          height: 3em;
+        }
+
+        .infotop {
+          text-align: center;
+          font-size: 20px;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: rgb(255, 255, 255);
+          font-weight: 600;
+          width: 100%;
+        }
+
+        .title {
+          font-size: 16px;
+          margin-top: 10px;
+        }
+
+        .value {
+          font-size: 24px;
+          font-weight: bold;
+          margin-top: 5px;
+        }
+
+        .wave:nth-child(2),
+        .wave:nth-child(3) {
+          top: 210px;
+        }
+
+        .playing .wave {
+          border-radius: 40%;
+          animation: wave 3000ms infinite linear;
+        }
+
+        .wave {
+          border-radius: 40%;
+          animation: wave 55s infinite linear;
+        }
+
+        .playing .wave:nth-child(2) {
+          animation-duration: 4000ms;
+        }
+
+        .wave:nth-child(2) {
+          animation-duration: 50s;
+        }
+
+        .playing .wave:nth-child(3) {
+          animation-duration: 5000ms;
+        }
+
+        .wave:nth-child(3) {
+          animation-duration: 45s;
+        }
+
+        @keyframes wave {
+          0% {
+            transform: rotate(0deg);
+          }
+
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </div>
   )
 }
