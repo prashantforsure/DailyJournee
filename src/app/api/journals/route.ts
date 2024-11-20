@@ -14,6 +14,7 @@ const journalSchema = z.object({
   categoryId: z.string().cuid().optional(),
 });
 
+//this is the api to create the journal
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
+//this is the api to get all the journal of the user
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
   

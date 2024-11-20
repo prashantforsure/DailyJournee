@@ -11,6 +11,8 @@ type SortField = typeof validSortFields[number];
 const validSortOrders = ['asc', 'desc'] as const;
 type SortOrder = typeof validSortOrders[number];
 
+
+//this is the api to get all the favorites entries
 export async function GET(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
