@@ -5,6 +5,7 @@ import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth/auth';
 import { z } from 'zod';
 
+// this is the api endpoint to delete the journal 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ journalId: string }> }
@@ -43,7 +44,7 @@ const journalId = (await params).journalId
 }
 
 
-
+//this is he api endpoint to the details of the user
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ journalId: string }> }
@@ -55,7 +56,7 @@ export async function GET(
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.id) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Unauth", { status: 401 });
     }
 
     const journal = await prisma.journal.findUnique({
@@ -184,6 +185,7 @@ export async function PUT(
   }
 }
 
+//this is the post request to create the journal 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ journalId: string }> }

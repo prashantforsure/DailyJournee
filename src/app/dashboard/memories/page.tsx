@@ -66,7 +66,7 @@ export default function MemoriesPage() {
   const [timeCapsules, setTimeCapsules] = useState<TimeCapsule[]>([])
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
   const [isLoading, setIsLoading] = useState(true)
-  const [newTimeCapsule, setNewTimeCapsule] = useState({ title: '', content: '', openDate: '' })
+  const [newTimeCapsule, setNewTimeCapsule] = useState({ title: '', content: '', openDate: '', journalId: '' })
 
   useEffect(() => {
     fetchMemories()
@@ -111,15 +111,19 @@ export default function MemoriesPage() {
     setSelectedYear(prevYear => prevYear + increment)
   }
 
+ 
   const handleCreateTimeCapsule = async () => {
     try {
-      await axios.post('/api/memories/time-capsules', newTimeCapsule)
+      const response = await axios.post('/api/memories/time-capsules', newTimeCapsule)
+      if (response.data.error) {
+        throw new Error(response.data.error)
+      }
       toast.success('Time capsule created successfully')
       fetchTimeCapsules()
-      setNewTimeCapsule({ title: '', content: '', openDate: '' })
+      setNewTimeCapsule({ title: '', content: '', openDate: '', journalId: '' })
     } catch (error) {
       console.error('Error creating time capsule:', error)
-      toast.error('Failed to create time capsule')
+      toast.error(error.response?.data?.error || 'Failed to create time capsule')
     }
   }
 
@@ -337,11 +341,29 @@ export default function MemoriesPage() {
                 className="col-span-3"
               />
             </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+  <Label htmlFor="journalId" className="text-right">
+    Journal
+  </Label>
+  <select
+    id="journalId"
+    value={newTimeCapsule.journalId}
+    onChange={(e) => setNewTimeCapsule({...newTimeCapsule, journalId: e.target.value})}
+    className="col-span-3"
+  >
+    <option value="">Select a journal</option>
+  
+  </select>
+</div>
           </div>
           <DialogFooter>
-            <Button onClick={handleCreateTimeCapsule} className="bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200">
-              Create Time Capsule
-            </Button>
+          <Button 
+            onClick={handleCreateTimeCapsule} 
+            className="bg-[#98FF98] text-gray-800 hover:bg-[#7AE47A] transition-colors duration-200"
+            disabled={!newTimeCapsule.title || !newTimeCapsule.content || !newTimeCapsule.openDate || !newTimeCapsule.journalId}
+          >
+            Create Time Capsule
+          </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

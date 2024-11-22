@@ -5,7 +5,7 @@ import { getServerSession } from 'next-auth/next'
 import { startOfYear, endOfYear, subYears } from 'date-fns'
 import { authOptions } from '@/lib/auth/auth'
 
-//this is the api to get the memories 
+//this is the api to get the memories of the user 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {

@@ -3,6 +3,7 @@ import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth/auth'
 
+//this is the code to find the journal and the entries 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions)
   if (!session?.user?.id) {

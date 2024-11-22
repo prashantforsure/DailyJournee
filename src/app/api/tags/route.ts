@@ -4,7 +4,7 @@ import { getServerSession } from "next-auth/next";
 import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth/auth';
 
-
+//this is the api endpoint to the tags 
 export async function GET() {
   const session = await getServerSession(authOptions);
 
@@ -42,7 +42,7 @@ export async function GET() {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
-
+//this is the api endpoint to create the tags
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
 
