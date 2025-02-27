@@ -52,6 +52,39 @@ const cardColors = [
   'bg-teal-100',
   'bg-orange-100',
 ]
+const SearchInput = () => {
+  return (
+    <form className="relative w-full max-w-[300-px]">
+      <button className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+        <Search className="w-4 h-4" />
+      </button>
+      <input 
+        className="w-full h-10 pl-8 pr-8 text-sm bg-white border-2 border-[#2f2ee9] rounded-[30px] focus:outline-none focus:border-[#2f2ee9] transition-all duration-300"
+        placeholder="Search favorites..." 
+        required 
+        type="text"
+      />
+      <button className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 opacity-0 transition-opacity duration-300" type="reset">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </form>
+  )
+}
+
+const CustomButton = ({ children, onClick, disabled }: { children: React.ReactNode, onClick?: () => void, disabled?: boolean }) => {
+  return (
+    <button
+    disabled={disabled}
+      className="relative flex items-center px-4 py-2 text-sm font-semibold text-[#2890f1] border border-[#2890f1] rounded-full overflow-hidden transition-colors duration-300 hover:text-white group"
+      onClick={onClick}
+    >
+      <span className="relative z-10">{children}</span>
+      <span className="absolute inset-0 w-full h-full bg-[#2890f1] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+    </button>
+  )
+}
 
 export default function FavoritesPage() {
   const router = useRouter()
@@ -89,14 +122,7 @@ export default function FavoritesPage() {
     }
   }
 
-  // const handleSort = (column: string) => {
-  //   if (sortBy === column) {
-  //     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
-  //   } else {
-  //     setSortBy(column)
-  //     setSortOrder('asc')
-  //   }
-  // }
+  
 
   const handleRemoveFavorite = async (entryId: string, journalId: string) => {
     try {
@@ -122,21 +148,8 @@ export default function FavoritesPage() {
 
   return (
     <div className="container mx-auto py-4 px-4 sm:px-6 lg:px-8 space-y-8 mb-8">
-      {/* <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-primary">Favorite Entries</h1>
-      </div> */}
-
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div className="relative flex-1 w-full sm:w-auto">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Search favorites..."
-            value={searchTerm}
-            onChange={handleSearch}
-            className="pl-10 pr-4 py-2 w-full sm:max-w-xs"
-          />
-        </div>
+        <SearchInput />
         <div className="flex items-center gap-2 w-full sm:w-auto">
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className="w-[180px]">
@@ -148,15 +161,20 @@ export default function FavoritesPage() {
               <SelectItem value="title">Title</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
-            {sortOrder === 'asc' ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          </Button>
+          <CustomButton onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+            <div className='flex'>
+              <span> {sortOrder === 'asc' ? <ChevronUp className="h-4 w-4 mr-2" /> : <ChevronDown className="h-4 w-4 mr-2" />}</span>
+              <span>Sort</span>
+            </div>
+           
+            
+          </CustomButton>
         </div>
       </div>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-        <Loader />
+          <Loader />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -182,22 +200,12 @@ export default function FavoritesPage() {
                 )}
               </CardContent>
               <CardFooter className="p-4 flex justify-between items-center">
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => router.push(`/dashboard/journals/${entry.journalId}/entries/${entry.id}`)}
-                  className="hover:bg-white/50"
-                >
+                <CustomButton onClick={() => router.push(`/dashboard/journals/${entry.journalId}/entries/${entry.id}`)}>
                   <Eye className="h-4 w-4 mr-2" /> View
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => handleRemoveFavorite(entry.id, entry.journalId)}
-                  className="hover:bg-white/50"
-                >
-                  <Star className="h-4 w-4 fill-current text-yellow-400" />
-                </Button>
+                </CustomButton>
+                <CustomButton onClick={() => handleRemoveFavorite(entry.id, entry.journalId)}>
+                  <Star className="h-4 w-4 fill-current text-yellow-400 mr-2" /> Unfavorite
+                </CustomButton>
               </CardFooter>
             </Card>
           ))}
@@ -205,23 +213,15 @@ export default function FavoritesPage() {
       )}
 
       <div className="flex justify-between items-center mt-8">
-        <Button
-          variant="outline"
-          onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
-          disabled={currentPage === 1}
-        >
+        <CustomButton onClick={() => handlePageChange(Math.max(1, currentPage - 1))} disabled={currentPage === 1}>
           Previous
-        </Button>
+        </CustomButton>
         <span className="text-sm text-gray-600">
           Page {currentPage} of {totalPages}
         </span>
-        <Button
-          variant="outline"
-          onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))}
-          disabled={currentPage === totalPages}
-        >
+        <CustomButton onClick={() => handlePageChange(Math.min(totalPages, currentPage + 1))} disabled={currentPage === totalPages}>
           Next
-        </Button>
+        </CustomButton>
       </div>
     </div>
   )

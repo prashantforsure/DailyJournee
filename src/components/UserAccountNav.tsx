@@ -48,26 +48,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
             </div>
           </motion.div>
         </Link>
-        <DropdownMenuItem asChild>
-          <Link href="/my-courses" className="flex items-center gap-3 py-3 px-4 hover:bg-gray-50 transition-colors duration-200">
-          <CircleUser className="h-5 w-5 text-[#A259FF]"/>
-            
-            <span className="text-sm font-medium text-gray-700">My Courses</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/courses" className="flex items-center gap-3 py-3 px-4 hover:bg-gray-50 transition-colors duration-200">
-            <Rss className="h-5 w-5 text-[#1ABCFE]" />
-            <span className="text-sm font-medium text-gray-700">Courses List</span>
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/results" className="flex items-center gap-3 py-3 px-4 hover:bg-gray-50 transition-colors duration-200">
-          <ListTodo className="h-5 w-5 text-[#A259FF]" />
-            
-            <span className="text-sm font-medium text-gray-700">Results</span>
-          </Link>
-        </DropdownMenuItem>
+        
       
 
         <DropdownMenuSeparator className="my-1 border-gray-100" />

@@ -117,6 +117,7 @@ model Entry {
   category     Category? @relation(fields: [categoryId], references: [id])
   media        Media[]
   tags         Tag[]
+  timecapsules TimeCapsule[]
 userId       String
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   isTimeCapsule Boolean @default(false)
@@ -166,6 +167,8 @@ model TimeCapsule {
   openDate  DateTime
   userId    String
   journalId String
+entryId String
+entry Entry @relation(fields: [entryId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   journal   Journal  @relation(fields: [journalId], references: [id], onDelete: Cascade)
 }
